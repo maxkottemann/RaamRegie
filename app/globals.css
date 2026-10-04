@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
+/*
+ * Brand colors — the only values a tenant overrides.
+ * Set them on a wrapper element at runtime:
+ *   style={{ "--brand-primary": "#...", "--brand-secondary": "#..." }}
+ * Everything derived (hover, soft, gradient) follows automatically.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-primary: #6a4cf0;
+  --brand-secondary: #3b6ff0;
+
+  --background: #f6f7fb;
+  --foreground: #1e2a6e;
 }
 
+/* inline: utilities resolve these at the element, so tenant overrides work */
 @theme inline {
+  --color-primary: var(--brand-primary);
+  --color-primary-hover: color-mix(in oklch, var(--brand-primary) 85%, black);
+  --color-primary-soft: color-mix(in oklch, var(--brand-primary) 10%, white);
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: var(--brand-secondary);
+  --color-secondary-hover: color-mix(in oklch, var(--brand-secondary) 85%, black);
+  --color-secondary-soft: color-mix(in oklch, var(--brand-secondary) 10%, white);
+  --color-secondary-foreground: #ffffff;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* fixed for every tenant */
+@theme {
+  --color-ink: #1e2a6e;
+  --color-ink-soft: #2b3a8c;
+  --color-muted: #64708f;
+  --color-line: #e4e7f0;
+  --color-surface: #f6f7fb;
+
+  --color-success: #1f9d55;
+  --color-warning: #e8a317;
+  --color-danger: #d64545;
+}
+
+/* the brand gradient — use this, never hand-write from-/to- for brand surfaces */
+@utility bg-brand {
+  background-image: linear-gradient(to right in oklch, var(--brand-primary), var(--brand-secondary));
+}
+
+@utility bg-brand-vertical {
+  background-image: linear-gradient(to bottom in oklch, var(--brand-primary), var(--brand-secondary));
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }

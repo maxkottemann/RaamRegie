@@ -16,7 +16,7 @@ export default function ClientPage() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between">
-        <PageHeader title="Locaties" icon={Users2} description="Beheer al uw locaties" />
+        <PageHeader title="Klanten" icon={Users2} description="Beheer al uw klanten" />
         <Button icon={UserPlus} size="md" variant="secondary" href="clients/new">
           Klant toevoegen
         </Button>

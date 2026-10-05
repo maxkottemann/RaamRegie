@@ -296,9 +296,13 @@ export default function WindowLoader({
     </div>
   );
 
-  if (!fullScreen) return loader;
+  if (!fullScreen) {
+    return <div className="flex h-full items-center justify-center">{loader}</div>;
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">{loader}</div>
+    <div className="flex h-dvh items-center justify-center overflow-hidden bg-background">
+      {loader}
+    </div>
   );
 }

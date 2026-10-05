@@ -87,7 +87,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   if (!themeLoaded) {
-    console.log("irun");
     return <WindowLoader />;
   }
   return (

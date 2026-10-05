@@ -3,7 +3,7 @@ import { getCompanyByUserId } from "@/services/companyService";
 import { Tables } from "@/types/database.types";
 import { useEffect, useState } from "react";
 
-type Company = Tables<'companies'>
+type Company = Tables<"companies">;
 
 export function useCompany() {
   const [company, setCompany] = useState<Company | null>(null);

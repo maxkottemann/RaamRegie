@@ -9,19 +9,15 @@ interface ToastProps {
 export default function Toast({ message, type, onClose }: ToastProps) {
   return (
     <div
-      className={`
-      fixed top-5 right-5 z-50 px-4 py-3 rounded-xl shadow-lg text-sm font-medium
-      flex items-center gap-3 transition-all duration-300 border 
-      ${
+      className={`fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium shadow-lg transition-all duration-300 ${
         type === "error"
-          ? "bg-red-50 text-red-600 border-red-100"
+          ? "border-red-100 bg-red-50 text-red-600"
           : type === "success"
-            ? "bg-green-50 text-green-600 border-green-100"
+            ? "border-green-100 bg-green-50 text-green-600"
             : type === "warning"
-              ? "bg-amber-50 text-amber-600 border-amber-100"
-              : "bg-[#0aaeff]/10 text-[#0aaeff] border-[#0aaeff]/20"
-      }
-    `}
+              ? "border-amber-100 bg-amber-50 text-amber-600"
+              : "border-[#0aaeff]/20 bg-[#0aaeff]/10 text-[#0aaeff]"
+      } `}
     >
       {type === "error" && (
         <svg
@@ -92,10 +88,7 @@ export default function Toast({ message, type, onClose }: ToastProps) {
 
       {message}
 
-      <button
-        onClick={onClose}
-        className="ml-2 opacity-50 hover:opacity-100 transition-opacity"
-      >
+      <button onClick={onClose} className="ml-2 opacity-50 transition-opacity hover:opacity-100">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="13"

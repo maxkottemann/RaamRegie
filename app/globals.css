@@ -48,11 +48,19 @@
 
 /* the brand gradient — use this, never hand-write from-/to- for brand surfaces */
 @utility bg-brand {
-  background-image: linear-gradient(to right in oklch, var(--brand-primary), var(--brand-secondary));
+  background-image: linear-gradient(
+    to right in oklch,
+    var(--brand-primary),
+    var(--brand-secondary)
+  );
 }
 
 @utility bg-brand-vertical {
-  background-image: linear-gradient(to bottom in oklch, var(--brand-primary), var(--brand-secondary));
+  background-image: linear-gradient(
+    to bottom in oklch,
+    var(--brand-primary),
+    var(--brand-secondary)
+  );
 }
 
 body {

@@ -1,4 +1,3 @@
-
 import { useId } from "react";
 
 type WindowLoaderProps = {
@@ -19,11 +18,7 @@ export default function WindowLoader({
   const shutterId = `${id}-shutter`;
 
   const loader = (
-    <div
-      role="status"
-      aria-label={label}
-      className="flex flex-col items-center gap-5"
-    >
+    <div role="status" aria-label={label} className="flex flex-col items-center gap-5">
       <svg
         width={size}
         height={size}
@@ -41,23 +36,11 @@ export default function WindowLoader({
             y2="100"
             gradientUnits="userSpaceOnUse"
           >
-            <stop
-              offset="0%"
-              style={{ stopColor: "var(--color-primary)" }}
-            />
-            <stop
-              offset="100%"
-              style={{ stopColor: "var(--color-secondary)" }}
-            />
+            <stop offset="0%" style={{ stopColor: "var(--color-primary)" }} />
+            <stop offset="100%" style={{ stopColor: "var(--color-secondary)" }} />
           </linearGradient>
 
-          <linearGradient
-            id={shineId}
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="0"
-          >
+          <linearGradient id={shineId} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="white" stopOpacity="0" />
             <stop offset="50%" stopColor="white" stopOpacity=".8" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
@@ -163,14 +146,7 @@ export default function WindowLoader({
 
         {/* Glass and four gradient panes */}
         <g clipPath={`url(#${glassId})`}>
-          <rect
-            x="20"
-            y="24"
-            width="72"
-            height="68"
-            fill={`url(#${gradientId})`}
-            opacity=".13"
-          />
+          <rect x="20" y="24" width="72" height="68" fill={`url(#${gradientId})`} opacity=".13" />
 
           <rect
             x="23"
@@ -224,14 +200,7 @@ export default function WindowLoader({
         {/* Roller shutter: drops over the glass, then rolls up */}
         <g clipPath={`url(#${shutterId})`}>
           <g className="wl-shutter">
-            <rect
-              x="19"
-              y="18"
-              width="74"
-              height="76"
-              rx="2"
-              fill={`url(#${gradientId})`}
-            />
+            <rect x="19" y="18" width="74" height="76" rx="2" fill={`url(#${gradientId})`} />
 
             {/* Individual shutter slats */}
             {Array.from({ length: 10 }, (_, i) => (
@@ -252,20 +221,8 @@ export default function WindowLoader({
             ))}
 
             {/* Bottom bar of the roller shutter */}
-            <rect
-              x="18"
-              y="87"
-              width="76"
-              height="6"
-              rx="2"
-              fill={`url(#${gradientId})`}
-            />
-            <path
-              d="M22 88 H90"
-              stroke="white"
-              strokeOpacity=".4"
-              strokeWidth="1"
-            />
+            <rect x="18" y="87" width="76" height="6" rx="2" fill={`url(#${gradientId})`} />
+            <path d="M22 88 H90" stroke="white" strokeOpacity=".4" strokeWidth="1" />
           </g>
         </g>
 
@@ -288,14 +245,7 @@ export default function WindowLoader({
         />
 
         {/* Shutter housing */}
-        <rect
-          x="15"
-          y="14"
-          width="82"
-          height="12"
-          rx="5"
-          fill={`url(#${gradientId})`}
-        />
+        <rect x="15" y="14" width="82" height="12" rx="5" fill={`url(#${gradientId})`} />
         <path
           d="M21 20H91"
           stroke="white"
@@ -305,25 +255,12 @@ export default function WindowLoader({
         />
 
         {/* Window sill */}
-        <rect
-          x="11"
-          y="96"
-          width="90"
-          height="5"
-          rx="2.5"
-          fill={`url(#${gradientId})`}
-        />
+        <rect x="11" y="96" width="90" height="5" rx="2.5" fill={`url(#${gradientId})`} />
       </svg>
 
       {/* Loading spinner and label */}
       <div className="flex items-center gap-2.5">
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <defs>
             <linearGradient
               id={`${gradientId}-spinner`}
@@ -333,14 +270,8 @@ export default function WindowLoader({
               y2="24"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0%"
-                style={{ stopColor: "var(--color-primary)" }}
-              />
-              <stop
-                offset="100%"
-                style={{ stopColor: "var(--color-secondary)" }}
-              />
+              <stop offset="0%" style={{ stopColor: "var(--color-primary)" }} />
+              <stop offset="100%" style={{ stopColor: "var(--color-secondary)" }} />
             </linearGradient>
           </defs>
           <circle
@@ -368,8 +299,6 @@ export default function WindowLoader({
   if (!fullScreen) return loader;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      {loader}
-    </div>
+    <div className="flex min-h-screen items-center justify-center bg-background">{loader}</div>
   );
 }

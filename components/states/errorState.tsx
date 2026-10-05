@@ -54,15 +54,55 @@ export default function ErrorState({
         </defs>
 
         {/* soft ambient glow */}
-        <rect x="12" y="16" width="88" height="84" rx="12" fill={`url(#${gradientId})`} opacity=".1" />
+        <rect
+          x="12"
+          y="16"
+          width="88"
+          height="84"
+          rx="12"
+          fill={`url(#${gradientId})`}
+          opacity=".1"
+        />
 
         {/* glass and panes, dimmed */}
         <g clipPath={`url(#${glassId})`}>
           <rect x="20" y="24" width="72" height="68" fill={`url(#${gradientId})`} opacity=".08" />
-          <rect x="23" y="27" width="31" height="29" rx="2" fill={`url(#${gradientId})`} opacity=".5" />
-          <rect x="58" y="27" width="31" height="29" rx="2" fill={`url(#${gradientId})`} opacity=".28" />
-          <rect x="23" y="61" width="31" height="28" rx="2" fill={`url(#${gradientId})`} opacity=".28" />
-          <rect x="58" y="61" width="31" height="28" rx="2" fill={`url(#${gradientId})`} opacity=".5" />
+          <rect
+            x="23"
+            y="27"
+            width="31"
+            height="29"
+            rx="2"
+            fill={`url(#${gradientId})`}
+            opacity=".5"
+          />
+          <rect
+            x="58"
+            y="27"
+            width="31"
+            height="29"
+            rx="2"
+            fill={`url(#${gradientId})`}
+            opacity=".28"
+          />
+          <rect
+            x="23"
+            y="61"
+            width="31"
+            height="28"
+            rx="2"
+            fill={`url(#${gradientId})`}
+            opacity=".28"
+          />
+          <rect
+            x="58"
+            y="61"
+            width="31"
+            height="28"
+            rx="2"
+            fill={`url(#${gradientId})`}
+            opacity=".5"
+          />
 
           {/* crack in the top-right pane */}
           <path
@@ -82,7 +122,15 @@ export default function ErrorState({
         </g>
 
         {/* frame and dividers */}
-        <rect x="18" y="22" width="76" height="72" rx="5" stroke={`url(#${gradientId})`} strokeWidth="4" />
+        <rect
+          x="18"
+          y="22"
+          width="76"
+          height="72"
+          rx="5"
+          stroke={`url(#${gradientId})`}
+          strokeWidth="4"
+        />
         <path
           d="M56 24V92 M20 58H92"
           stroke={`url(#${gradientId})`}
@@ -92,13 +140,26 @@ export default function ErrorState({
 
         {/* shutter housing */}
         <rect x="15" y="14" width="82" height="12" rx="5" fill={`url(#${gradientId})`} />
-        <path d="M21 20H91" stroke="white" strokeOpacity=".35" strokeWidth="1.5" strokeLinecap="round" />
+        <path
+          d="M21 20H91"
+          stroke="white"
+          strokeOpacity=".35"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
 
         {/* window sill */}
         <rect x="11" y="96" width="90" height="5" rx="2.5" fill={`url(#${gradientId})`} />
 
         {/* error badge */}
-        <circle cx="96" cy="30" r="11" style={{ fill: "var(--color-danger, #d64545)" }} stroke="white" strokeWidth="3" />
+        <circle
+          cx="96"
+          cy="30"
+          r="11"
+          style={{ fill: "var(--color-danger, #d64545)" }}
+          stroke="white"
+          strokeWidth="3"
+        />
         <path d="M96 24.5V31" stroke="white" strokeWidth="2.6" strokeLinecap="round" />
         <circle cx="96" cy="35.2" r="1.5" fill="white" />
       </svg>
@@ -116,13 +177,13 @@ export default function ErrorState({
           Opnieuw proberen
         </button>
         {backHref && (
-            <Link
-              href={backHref}
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-medium text-ink transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              {backLabel}
-            </Link>
-          )}
+          <Link
+            href={backHref}
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-medium text-ink transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            {backLabel}
+          </Link>
+        )}
       </div>
     </div>
   );

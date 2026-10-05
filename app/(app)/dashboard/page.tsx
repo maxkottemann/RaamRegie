@@ -1,6 +1,3 @@
-"use client"
+"use client";
 
-
-export  default function Dashboard(){
- 
-}
+export default function Dashboard() {}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, House, Settings, type LucideIcon } from "lucide-react";
+import { Building2, House, Settings, Users2, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCompany } from "@/hooks/companyHooks";
 import { useProfile } from "@/context/ProfileContext";
@@ -15,7 +15,7 @@ type NavLink = {
   href: string;
   label: string;
   icon: LucideIcon;
-  roles?: Role[]; 
+  roles?: Role[];
 };
 
 type NavSection = {
@@ -27,10 +27,15 @@ const SECTIONS: NavSection[] = [
   {
     label: "Overzicht",
     links: [{ href: "/dashboard", label: "Dashboard", icon: House }],
-  }, {
-    label: "Locaties",
-    links: [{ href: "/locations", label: "Locations", icon: Building2 }],
   },
+  {
+    label: "Klanten & Locaties",
+    links: [
+      { href: "/clients", label: "Klanten", icon: Users2 },
+      { href: "/locations", label: "Locaties", icon: Building2 },
+    ],
+  },
+
   {
     label: "Account",
     links: [{ href: "/settings", label: "Instellingen", icon: Settings }],
@@ -108,28 +113,17 @@ export default function Sidebar({ className, open, onClose }: SidebarProps) {
 
       <nav
         aria-label="Hoofdmenu"
-        className={`
-          fixed top-0 left-0 z-200 flex h-dvh w-64 flex-col
-          border-r border-line bg-white
-          transition-transform duration-300
-          ${open ? "translate-x-0" : "-translate-x-full"}
-          xl:static xl:translate-x-0
-          ${className ?? ""}
-        `}
+        className={`fixed top-0 left-0 z-200 flex h-dvh w-64 flex-col border-r border-line bg-white transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} xl:static xl:translate-x-0 ${className ?? ""} `}
       >
-        <div className="flex h-15 justify-center shrink-0 items-center px-6">
+        <div className="flex h-15 shrink-0 items-center justify-center px-6">
           {logoUrl && (
-          <div className="h-12 flex items-center justify-center mt-3">
-              <img
-                src={logoUrl}
-                alt="Logo"
-                className="max-h-full max-w-full object-contain"
-              />
+            <div className="mt-3 flex h-12 items-center justify-center">
+              <img src={logoUrl} alt="Logo" className="max-h-full max-w-full object-contain" />
             </div>
           )}
         </div>
 
-        <div className="border-gray-100 mt-1 border"></div>
+        <div className="mt-1 border border-gray-100"></div>
 
         <div
           className="flex-1 overflow-y-auto overscroll-contain px-3 pt-4"
@@ -137,7 +131,7 @@ export default function Sidebar({ className, open, onClose }: SidebarProps) {
         >
           {visibleSections.map((section) => (
             <div key={section.label} className="mb-6">
-              <p className="mb-2 px-3 text-[11px] font-medium uppercase tracking-wider text-muted/70">
+              <p className="mb-2 px-3 text-[11px] font-medium tracking-wider text-muted/70 uppercase">
                 {section.label}
               </p>
 
@@ -151,22 +145,19 @@ export default function Sidebar({ className, open, onClose }: SidebarProps) {
                         href={href}
                         onClick={onClose}
                         aria-current={active ? "page" : undefined}
-                        className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-200
-                          ${
-                            active
-                              ? "bg-primary-soft font-medium text-ink"
-                              : "text-muted hover:bg-surface hover:text-ink"
-                          }`}
+                        className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-200 ${
+                          active
+                            ? "bg-primary-soft font-medium text-ink"
+                            : "text-muted hover:bg-surface hover:text-ink"
+                        }`}
                       >
                         <span
                           aria-hidden="true"
-                          className={`absolute left-0 top-1/2 h-5 w-0.75 -translate-y-1/2 rounded-full bg-brand from-primary to-secondary transition-opacity duration-200
-                            ${active ? "opacity-100" : "opacity-0"}`}
+                          className={`absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-full bg-brand from-primary to-secondary transition-opacity duration-200 ${active ? "opacity-100" : "opacity-0"}`}
                         />
                         <Icon
                           strokeWidth={1.75}
-                          className={`h-4.5 w-4.5 shrink-0 transition-colors duration-200
-                            ${active ? "text-primary" : "text-muted/70 group-hover:text-ink"}`}
+                          className={`h-4.5 w-4.5 shrink-0 transition-colors duration-200 ${active ? "text-primary" : "text-muted/70 group-hover:text-ink"}`}
                         />
                         {label}
                       </Link>

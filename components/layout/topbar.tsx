@@ -63,13 +63,15 @@ export default function Topbar({ title, onMenuToggle }: TopbarProps) {
           onClick={() => setMenuOpen((p) => !p)}
           aria-expanded={menuOpen}
           aria-haspopup="menu"
-          className="flex cursor-pointer items-center gap-3 rounded-lg py-1.5 pl-1.5 pr-2.5 transition-colors hover:bg-white/15"
+          className="flex cursor-pointer items-center gap-3 rounded-lg py-1.5 pr-2.5 pl-1.5 transition-colors hover:bg-white/15"
         >
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 text-xs font-semibold text-white ring-1 ring-white/30">
             {initials}
           </span>
           <span className="hidden text-left sm:block">
-            <span className="block text-sm font-medium leading-tight text-white">{profile.name}</span>
+            <span className="block text-sm leading-tight font-medium text-white">
+              {profile.name}
+            </span>
             {profile.email && (
               <span className="block max-w-40 truncate text-xs leading-tight text-white/70">
                 {profile.email}
@@ -85,7 +87,7 @@ export default function Topbar({ title, onMenuToggle }: TopbarProps) {
         {menuOpen && (
           <div
             role="menu"
-            className="absolute right-0 top-full z-[999] mt-2 w-60 overflow-hidden rounded-xl border border-line bg-white shadow-lg"
+            className="absolute top-full right-0 z-[999] mt-2 w-60 overflow-hidden rounded-xl border border-line bg-white shadow-lg"
           >
             <div className="flex items-center gap-3 border-b border-line px-4 py-3">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">

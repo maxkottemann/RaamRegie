@@ -12,16 +12,16 @@ Clean, calm, corporate-modern. White surfaces on a light blue-gray background, h
 
 ## Color tokens
 
-| Token | Use |
-|---|---|
-| `primary`, `primary-hover`, `primary-soft` | Brand (tenant-overridable). Focus rings, active states, links, soft tints. |
-| `secondary`, `secondary-hover`, `secondary-soft` | Second brand color (tenant-overridable). Gradient end, info accents. |
-| `bg-brand` / `bg-brand-vertical` | The brand gradient. |
-| `ink` | Headings and body text. |
-| `muted` | Secondary text, icons, placeholders (`muted/60`). |
-| `line` | All borders and dividers. |
-| `surface` | Page background, hover backgrounds, table headers. |
-| `success`, `warning`, `danger` | Status only. Never decorative. |
+| Token                                            | Use                                                                        |
+| ------------------------------------------------ | -------------------------------------------------------------------------- |
+| `primary`, `primary-hover`, `primary-soft`       | Brand (tenant-overridable). Focus rings, active states, links, soft tints. |
+| `secondary`, `secondary-hover`, `secondary-soft` | Second brand color (tenant-overridable). Gradient end, info accents.       |
+| `bg-brand` / `bg-brand-vertical`                 | The brand gradient.                                                        |
+| `ink`                                            | Headings and body text.                                                    |
+| `muted`                                          | Secondary text, icons, placeholders (`muted/60`).                          |
+| `line`                                           | All borders and dividers.                                                  |
+| `surface`                                        | Page background, hover backgrounds, table headers.                         |
+| `success`, `warning`, `danger`                   | Status only. Never decorative.                                             |
 
 Tenant colors are set on the app wrapper:
 `style={{ "--brand-primary": company.primary_color, "--brand-secondary": company.secondary_color }}`
@@ -30,32 +30,34 @@ Tenant colors must keep white text readable (contrast ≥ 4.5:1); validate when 
 ## Where the gradient goes (and nowhere else)
 
 - Top bar
-- Primary buttons (main call to action)
 - Active nav indicator (3px bar, `bg-brand-vertical`)
 - Login/auth accent details
 - Loaders
+- Selected states: the icon tile of a selected item (`bg-brand text-white`) and the selected check badge (`rounded-full bg-brand`), on top of a `bg-primary-soft` / `border-primary/40` item
+
+Large areas (card backgrounds, page sections) never get the gradient; it stays on small, meaningful elements so it keeps standing out. **Buttons never use the gradient**; primary buttons are solid `bg-primary`.
 
 ## Shape
 
-| Element | Radius |
-|---|---|
-| Badges, tags, small chips | `rounded-md` |
-| Buttons, inputs, selects, nav items, menu items | `rounded-lg` |
-| Cards, dropdowns, popovers, modals, toasts | `rounded-xl` |
-| Avatars, status dots, pill toggles | `rounded-full` |
+| Element                                         | Radius         |
+| ----------------------------------------------- | -------------- |
+| Badges, tags, small chips                       | `rounded-md`   |
+| Buttons, inputs, selects, nav items, menu items | `rounded-lg`   |
+| Cards, dropdowns, popovers, modals, toasts      | `rounded-xl`   |
+| Avatars, status dots, pill toggles              | `rounded-full` |
 
 ## Typography (Geist)
 
-| Role | Classes |
-|---|---|
-| Page heading | `text-xl font-semibold tracking-tight text-ink` |
-| Top bar title | `text-base font-semibold tracking-tight text-white` |
-| Card / section title | `text-sm font-semibold text-ink` |
-| Body | `text-sm text-ink` |
-| Secondary text | `text-sm text-muted` |
-| Form label | `text-sm font-medium text-ink` |
+| Role                                              | Classes                                                          |
+| ------------------------------------------------- | ---------------------------------------------------------------- |
+| Page heading                                      | `text-xl font-semibold tracking-tight text-ink`                  |
+| Top bar title                                     | `text-base font-semibold tracking-tight text-white`              |
+| Card / section title                              | `text-sm font-semibold text-ink`                                 |
+| Body                                              | `text-sm text-ink`                                               |
+| Secondary text                                    | `text-sm text-muted`                                             |
+| Form label                                        | `text-sm font-medium text-ink`                                   |
 | Group label (sidebar, small section headers only) | `text-[11px] font-medium uppercase tracking-wider text-muted/70` |
-| Numbers / KPIs | `text-2xl font-semibold tracking-tight text-ink tabular-nums` |
+| Numbers / KPIs                                    | `text-2xl font-semibold tracking-tight text-ink tabular-nums`    |
 
 ## Spacing & layout
 
@@ -71,13 +73,19 @@ lucide-react, `strokeWidth={1.75}`. Sizes: `h-4 w-4` in buttons/menus, `h-[18px]
 
 `transition-colors` / `transition-opacity` / `transition-transform`, `duration-200`. Only animate color, opacity and transform. Respect `motion-reduce:`.
 
+## Shared components (use these, don't hand-roll)
+
+- `Button` (`components/ui/button.tsx`): variants `primary` (solid brand color), `secondary`, `ghost`, `danger`; sizes `sm` / `md` / `lg`; `icon`, `loading`, `href`.
+- `PageHeader` (`components/layout/pageHeader.tsx`): top of every page. `title`, `description`, optional `icon` (gradient tile), `actions` (buttons, right side).
+- `SubPageHeader`: same, with a back button that uses `router.back()` (falls back to `fallbackHref` when there's no history; `onBack` overrides it). Use on detail and nested pages.
+
 ## Component recipes
 
 **Card**
 `rounded-xl border border-line bg-white p-5`
 
 **Primary button**
-`inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-white transition hover:brightness-110 disabled:opacity-50 disabled:pointer-events-none`
+`inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-white shadow-sm transition hover:bg-primary-hover disabled:opacity-50 disabled:pointer-events-none`
 
 **Secondary button**
 `inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-medium text-ink transition-colors hover:bg-surface`
@@ -109,6 +117,13 @@ Overlay `bg-ink/40`; panel `w-full max-w-lg rounded-xl border border-line bg-whi
 
 **Nav item** (sidebar)
 Idle `rounded-lg px-3 py-2 text-sm text-muted hover:bg-surface hover:text-ink`; active `bg-primary-soft font-medium text-ink`, icon `text-primary`, plus 3px `bg-brand-vertical` bar on the left.
+
+**Selectable list item** (pickers, selectors)
+Idle `rounded-xl border border-line bg-white p-3 hover:border-primary/30 hover:bg-surface`, icon tile `h-10 w-10 rounded-lg bg-surface text-muted`.
+Selected `border-primary/40 bg-primary-soft`, icon tile `bg-brand text-white`, check badge `h-5 w-5 rounded-full bg-brand` with white `Check`. Use `aria-pressed`.
+
+**Search input**
+Input recipe with `pl-9`, `type="search"`, and a `Search` icon `absolute left-3 h-4 w-4 text-muted pointer-events-none`.
 
 **Empty state**
 Centered in the card: icon in `h-10 w-10 rounded-xl bg-primary-soft text-primary`, title `text-sm font-semibold text-ink`, text `text-sm text-muted`, optional primary button.

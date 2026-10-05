@@ -3,7 +3,9 @@ import type { Database, Tables } from "@/types/database.types";
 
 type Company = Tables<"companies">;
 
-export async function getCompanyByUserId(supabase:SupabaseClient<Database>): Promise<Company | null> {
+export async function getCompanyByUserId(
+  supabase: SupabaseClient<Database>,
+): Promise<Company | null> {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -26,4 +28,3 @@ export async function getCompanyByUserId(supabase:SupabaseClient<Database>): Pro
   if (companyError) throw new Error(companyError.message);
   return company ?? null;
 }
-

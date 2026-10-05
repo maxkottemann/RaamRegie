@@ -12,7 +12,6 @@ type ProfileContextType = {
   profile: Profile;
 };
 
-
 const ProfileContext = createContext<ProfileContextType | null>(null);
 
 export function ProfileProvider({ children }: { children: React.ReactNode }) {
@@ -48,11 +47,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     return <ErrorState />;
   }
 
-  return (
-    <ProfileContext.Provider value={{ profile }}>
-      {children}
-    </ProfileContext.Provider>
-  );
+  return <ProfileContext.Provider value={{ profile }}>{children}</ProfileContext.Provider>;
 }
 
 export function useProfile() {

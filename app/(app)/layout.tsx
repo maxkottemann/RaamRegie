@@ -34,23 +34,17 @@ function AppShell({ children }: { children: React.ReactNode }) {
     "/analysis": "Analysecentrum",
   };
 
-  const title =
-    Object.entries(titles).find(([route]) => pathname.startsWith(route))?.[1] ??
-    "";
+  const title = Object.entries(titles).find(([route]) => pathname.startsWith(route))?.[1] ?? "";
 
   return (
-    <div className="min-h-screen flex bg-[#f5f5f5]">
+    <div className="flex min-h-screen bg-[#f5f5f5]">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
-      )}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
-      <div className="flex flex-col flex-1 h-screen overflow-hidden">
+      <div className="flex h-screen flex-1 flex-col overflow-hidden">
         <Topbar title={title} onMenuToggle={() => setSidebarOpen((p) => !p)} />
-        <main className="flex-1 overflow-auto bg-surface p-3 xl:py-6 xl:px-6">
-          {children}
-        </main>
+        <main className="flex-1 overflow-auto bg-surface p-3 xl:px-6 xl:py-6">{children}</main>
       </div>
     </div>
   );
@@ -59,13 +53,13 @@ function AppShell({ children }: { children: React.ReactNode }) {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <QueryProvider>
-    <ToastProvider>
-      <ProfileProvider>
-        <ThemeProvider>
-          <AppShell>{children}</AppShell>
-        </ThemeProvider>
-      </ProfileProvider>
-    </ToastProvider>
+      <ToastProvider>
+        <ProfileProvider>
+          <ThemeProvider>
+            <AppShell>{children}</AppShell>
+          </ThemeProvider>
+        </ProfileProvider>
+      </ToastProvider>
     </QueryProvider>
   );
 }

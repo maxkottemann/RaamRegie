@@ -31,10 +31,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       if (!profile) return;
 
       try {
-        if (
-          profile.role === "company_admin" ||
-          profile.role === "company_employee"
-        ) {
+        if (profile.role === "company_admin" || profile.role === "company_employee") {
           if (!company) return;
           applyTheme({
             primary: company.primary_color ?? defaultTheme.primary,
@@ -46,29 +43,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (
-          (profile.role === "client_admin" ||
-          profile.role === "client_viewer") && profile.client_id
+          (profile.role === "client_admin" || profile.role === "client_viewer") &&
+          profile.client_id
         ) {
-        const {data:companies} = await supabase
-        .from("company_clients")
-        .select("companies(primary_color,secondary_color,accent_color)")
-        .eq("client_id",profile.client_id)
+          const { data: companies } = await supabase
+            .from("company_clients")
+            .select("companies(primary_color,secondary_color,accent_color)")
+            .eq("client_id", profile.client_id);
 
-
-        if(!companies?.length){
-          applyTheme(defaultTheme)
-          setThemeLoaded(true)
-        }
+          if (!companies?.length) {
+            applyTheme(defaultTheme);
+            setThemeLoaded(true);
+          }
 
           if (companies?.length === 1) {
-              applyTheme({
-                primary: companies[0]?.companies.primary_color ?? defaultTheme.primary,
-                secondary:
-                  companies[0]?.companies.secondary_color ?? defaultTheme.secondary,
-                accent: companies[0]?.companies.accent_color ?? defaultTheme.accent,
-              });
-              setThemeLoaded(true);
-              return;
+            applyTheme({
+              primary: companies[0]?.companies.primary_color ?? defaultTheme.primary,
+              secondary: companies[0]?.companies.secondary_color ?? defaultTheme.secondary,
+              accent: companies[0]?.companies.accent_color ?? defaultTheme.accent,
+            });
+            setThemeLoaded(true);
+            return;
           }
 
           applyTheme(defaultTheme);
@@ -81,7 +76,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       } catch {
         applyTheme(defaultTheme);
         setThemeLoaded(true);
-      } 
+      }
     }
 
     resolveTheme();
@@ -91,9 +86,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(t);
   }
 
-  if (!themeLoaded){ 
-    console.log('irun')
-  return <WindowLoader />;
+  if (!themeLoaded) {
+    console.log("irun");
+    return <WindowLoader />;
   }
   return (
     <ThemeContext.Provider value={theme}>

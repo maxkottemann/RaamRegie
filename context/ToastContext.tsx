@@ -9,10 +9,7 @@ interface Toast {
 
 interface ToastContextType {
   toast: Toast | null;
-  showToast: (
-    message: string,
-    type: "error" | "success" | "info" | "warning",
-  ) => void;
+  showToast: (message: string, type: "error" | "success" | "info" | "warning") => void;
   hideToast: () => void;
 }
 
@@ -25,10 +22,7 @@ const ToastContext = createContext<ToastContextType>({
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toast, setToast] = useState<Toast | null>(null);
 
-  function triggerToast(
-    message: string,
-    type: "error" | "success" | "info" | "warning",
-  ) {
+  function triggerToast(message: string, type: "error" | "success" | "info" | "warning") {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   }

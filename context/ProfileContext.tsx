@@ -40,7 +40,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (loading) {
-    return <WindowLoader />;
+    return <WindowLoader fullScreen={true} />;
   }
 
   if (error || !profile) {

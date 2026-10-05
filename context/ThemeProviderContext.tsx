@@ -87,7 +87,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   if (!themeLoaded) {
-    return <WindowLoader />;
+    return <WindowLoader fullScreen={true} />;
   }
   return (
     <ThemeContext.Provider value={theme}>

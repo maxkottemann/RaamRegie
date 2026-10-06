@@ -22,7 +22,7 @@ export function PageHeader({
   actions,
   showBack = false,
   onBack,
-  backLabel = "Terug",
+  backLabel = "Terug naar vorige pagina",
   fallbackHref = "/dashboard",
 }: PageHeaderProps) {
   const router = useRouter();
@@ -42,15 +42,21 @@ export function PageHeader({
     <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-center gap-3">
         {(showBack || onBack) && (
-          <button
-            type="button"
-            onClick={handleBack}
-            aria-label={backLabel}
-            title={backLabel}
-            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-line bg-white text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
-            <ArrowLeft strokeWidth={1.75} className="h-4 w-4" />
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={handleBack}
+              aria-label={backLabel}
+              title={backLabel}
+              className="group -ml-2 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <ArrowLeft
+                strokeWidth={1.75}
+                className="h-[18px] w-[18px] transition-transform duration-200 group-hover:-translate-x-0.5"
+              />
+            </button>
+            <span aria-hidden="true" className="h-6 w-px shrink-0 bg-line" />
+          </>
         )}
 
         {Icon && (

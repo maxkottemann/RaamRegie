@@ -1,45 +1,48 @@
-"use client";
-
 import { SubPageHeader } from "@/components/headers/pageHeader";
 import Button from "@/components/ui/buttons/Button";
 import ClientFormFields from "@/components/ui/forms/clientForm";
 import { useToast } from "@/context/ToastContext";
-import { useCreateClient } from "@/hooks/clientHooks";
+import { useUpdateClient } from "@/hooks/clientHooks";
 import { REQUIRED_FIELDS } from "@/lib/constants";
+import { ClientDetail } from "@/services/clientService";
 import { ClientFormInput, ClientFormValues, clientSchema } from "@/zodSchemas/clientSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "lucide-react";
+import { Save, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 
-export default function NewClientPage() {
-  const router = useRouter();
-  const createClient = useCreateClient();
-  const { showToast } = useToast();
+export function toClientFormInput(client: NonNullable<ClientDetail>): ClientFormInput {
+  return {
+    name: client.name,
+    street: client.street,
+    number: client.number,
+    postal_code: client.postal_code,
+    city: client.city,
+    logo_url: client.logo_url ?? "",
+    primary_color: client.primary_color ?? "",
+    secondary_color: client.secondary_color ?? "",
+    accent_color: client.accent_color ?? "",
+    email: client.email ?? "",
+    website: client.website ?? "",
+    kvk: client.kvk ?? "",
+    btw_num: client.btw_num ?? "",
+  };
+}
 
+export default function EditClientForm({ client }: { client: ClientDetail }) {
+  if (!client) return;
+  const updateClient = useUpdateClient(client.id);
+  const { showToast } = useToast();
+  const router = useRouter();
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ClientFormInput, unknown, ClientFormValues>({
     resolver: zodResolver(clientSchema),
     mode: "onTouched",
-    defaultValues: {
-      name: "",
-      city: "",
-      postal_code: "",
-      street: "",
-      number: "",
-      logo_url: "",
-      primary_color: "",
-      secondary_color: "",
-      accent_color: "",
-      email: "",
-      website: "",
-      kvk: "",
-      btw_num: "",
-    },
+    defaultValues: toClientFormInput(client),
   });
 
   const values = useWatch({ control });
@@ -54,7 +57,7 @@ export default function NewClientPage() {
   const cityLine = [values.postal_code, values.city].filter((v) => v?.trim()).join("  ");
 
   function onSubmit(formValues: ClientFormValues) {
-    createClient.mutate(formValues, {
+    updateClient.mutate(formValues, {
       onSuccess: (client) => {
         showToast("Klant aangemaakt", "success");
         router.push(`/clients/${client.id}`);
@@ -65,8 +68,8 @@ export default function NewClientPage() {
   return (
     <div className="mx-auto">
       <SubPageHeader
-        title="Nieuwe klant"
-        description="Voeg een nieuwe klant toe"
+        title="Klant bewerken"
+        description="Bewerk de gegevens van de klant"
         icon={User}
         fallbackHref="/clients"
       />
@@ -125,7 +128,7 @@ export default function NewClientPage() {
             </div>
 
             <div className="space-y-2 border-t border-line p-5">
-              {createClient.error && (
+              {updateClient.error && (
                 <p
                   role="alert"
                   className="rounded-lg bg-danger/10 px-3 py-2.5 text-xs font-medium text-danger"
@@ -133,8 +136,15 @@ export default function NewClientPage() {
                   De klant kon niet worden aangemaakt. Probeer het opnieuw.
                 </p>
               )}
-              <Button type="submit" size="lg" className="w-full" loading={createClient.isPending}>
-                Klant aanmaken
+              <Button
+                icon={Save}
+                disabled={!isDirty}
+                type="submit"
+                size="lg"
+                className="w-full"
+                loading={updateClient.isPending}
+              >
+                Opslaan
               </Button>
               <Button variant="ghost" className="w-full" onClick={() => router.back()}>
                 Annuleren

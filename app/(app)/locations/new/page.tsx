@@ -12,19 +12,19 @@ import {
   type LocationFormValues,
 } from "@/zodSchemas/locationSchema";
 import { SubPageHeader } from "@/components/headers/pageHeader";
-import FormField from "@/components/ui/forms/formField";
-import FormSection from "@/components/ui/forms/formsection";
-import Input from "@/components/ui/forms/input";
-import Select from "@/components/ui/forms/select";
 import Button from "@/components/ui/buttons/Button";
 import { useCreateLocation } from "@/hooks/locationHooks";
 import { useToast } from "@/context/ToastContext";
+import LocationFormnFields from "@/components/ui/forms/locationForm";
+import NotFoundState from "@/components/states/notFound";
+import WindowLoader from "@/components/states/loadingState";
+import ErrorState from "@/components/states/errorState";
 
 const REQUIRED_FIELDS = ["client_id", "name", "street", "number", "postal_code", "city"] as const;
 
 export default function NewLocationPage() {
   const router = useRouter();
-  const clients = useClientOptions();
+  const { data: clients, isPending, error } = useClientOptions();
   const createLocation = useCreateLocation();
   const { showToast } = useToast();
 
@@ -51,7 +51,11 @@ export default function NewLocationPage() {
 
   const values = useWatch({ control });
 
-  const clientOptions = (clients.data ?? []).map((c) => ({ value: c.id, label: c.name }));
+  if (isPending) return <WindowLoader />;
+  if (error) return <ErrorState />;
+  if (!clients) return <NotFoundState />;
+
+  const clientOptions = (clients ?? []).map((c) => ({ value: c.id, label: c.name }));
   const clientName = clientOptions.find((c) => c.value === values.client_id)?.label;
 
   const filled = REQUIRED_FIELDS.filter((key) => {
@@ -87,118 +91,13 @@ export default function NewLocationPage() {
         className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]"
       >
         {/* form sections */}
-        <div className="space-y-6">
-          <FormSection
-            icon={UsersRound}
-            title="Klant"
-            description="Bij welke klant hoort deze locatie?"
-          >
-            <FormField id="client_id" label="Klant" error={errors.client_id?.message}>
-              <Controller
-                name="client_id"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    id="client_id"
-                    options={clientOptions}
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    placeholder={clients.isPending ? "Laden…" : "Kies een klant"}
-                    disabled={clients.isPending}
-                    invalid={!!errors.client_id}
-                  />
-                )}
-              />
-            </FormField>
-          </FormSection>
-
-          <FormSection icon={Building2} title="Locatie" description="Hoe heet de locatie?">
-            <FormField id="name" label="Naam" error={errors.name?.message}>
-              <Input
-                id="name"
-                icon={Building2}
-                placeholder="Bijv. Isala Zwolle, gebouw B"
-                invalid={!!errors.name}
-                {...register("name")}
-              />
-            </FormField>
-          </FormSection>
-
-          <FormSection icon={MapIcon} title="Adres" description="Waar staat de locatie?">
-            <div className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_8rem]">
-              <FormField id="street" label="Straat" error={errors.street?.message}>
-                <Input
-                  id="street"
-                  icon={MapPin}
-                  autoComplete="address-line1"
-                  invalid={!!errors.street}
-                  {...register("street")}
-                />
-              </FormField>
-              <FormField id="number" label="Huisnummer" error={errors.number?.message}>
-                <Input id="number" invalid={!!errors.number} {...register("number")} />
-              </FormField>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-[10rem_minmax(0,1fr)]">
-              <FormField id="postal_code" label="Postcode" error={errors.postal_code?.message}>
-                <Input
-                  id="postal_code"
-                  autoComplete="postal-code"
-                  placeholder="1234 AB"
-                  invalid={!!errors.postal_code}
-                  {...register("postal_code")}
-                />
-              </FormField>
-              <FormField id="city" label="Plaats" error={errors.city?.message}>
-                <Input
-                  id="city"
-                  autoComplete="address-level2"
-                  invalid={!!errors.city}
-                  {...register("city")}
-                />
-              </FormField>
-            </div>
-          </FormSection>
-
-          <FormSection
-            icon={Tag}
-            title="Referenties"
-            description="Handig om de locatie terug te vinden"
-          >
-            <div className="grid gap-5 sm:grid-cols-2">
-              <FormField
-                id="external_id"
-                label="Extern ID"
-                optional
-                hint="Nummer van de klant"
-                error={errors.external_id?.message}
-              >
-                <Input
-                  id="external_id"
-                  icon={Hash}
-                  invalid={!!errors.external_id}
-                  {...register("external_id")}
-                />
-              </FormField>
-              <FormField
-                id="internal_id"
-                label="Intern ID"
-                optional
-                hint="Alleen zichtbaar voor jullie"
-                error={errors.internal_id?.message}
-              >
-                <Input
-                  id="internal_id"
-                  icon={Hash}
-                  invalid={!!errors.internal_id}
-                  {...register("internal_id")}
-                />
-              </FormField>
-            </div>
-          </FormSection>
-        </div>
+        <LocationFormnFields
+          register={register}
+          control={control}
+          clientOptions={clientOptions}
+          clientsLoading={isPending}
+          errors={errors}
+        />
 
         <aside className="space-y-4 lg:sticky lg:top-6">
           <div className="overflow-hidden rounded-xl border border-line bg-white">

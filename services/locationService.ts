@@ -15,6 +15,19 @@ export async function getLocationsWithClient(supabase: SupabaseClient<Database>)
   return data;
 }
 
+export async function getLocationWithClient(supabase: SupabaseClient<Database>, id: string) {
+  const { data, error } = await supabase
+    .from("locations")
+    .select(
+      "id, name, checkin_procedure, city, postal_code, street, number, clients(id, name, city, postal_code, street, number)",
+    )
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data;
+}
+
 export function toCreateLocationArgs(values: LocationFormValues): CreateLocationArgs {
   return {
     p_client_id: values.client_id,
@@ -37,4 +50,5 @@ export async function createLocation(supabase: SupabaseClient<Database>, args: C
 }
 
 export type LocationsWithClient = Awaited<ReturnType<typeof getLocationsWithClient>>;
-export type LocationWithClient = LocationsWithClient[number];
+export type LocationWithClientListItem = Awaited<ReturnType<typeof getLocationsWithClient>>[number];
+export type LocationDetail = Awaited<ReturnType<typeof getLocationWithClient>>;

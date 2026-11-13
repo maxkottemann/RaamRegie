@@ -1,8 +1,8 @@
 "use client";
 
 import { SubPageHeader } from "@/components/headers/pageHeader";
-import ErrorState from "@/components/states/errorState";
-import WindowLoader from "@/components/states/loadingState";
+import RoomError from "@/components/states/ErrorState";
+import RoomLoader from "@/components/states/loadingState";
 import NotFoundState from "@/components/states/notFound";
 import Button from "@/components/ui/buttons/Button";
 import Card from "@/components/ui/card";
@@ -22,8 +22,8 @@ export default function ClientDetailPage() {
 
   const { data: client, isPending, error } = useClient(id);
 
-  if (isPending) return <WindowLoader />;
-  if (error) return <ErrorState />;
+  if (isPending) return <RoomLoader />;
+  if (error) return <RoomError />;
   if (!client) return <NotFoundState />;
 
   const canEditCompany = company?.id === client.owner_company_id;

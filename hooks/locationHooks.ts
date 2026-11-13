@@ -4,6 +4,8 @@ import {
   getLocationsWithClient,
   getLocationWithClient,
   toCreateLocationArgs,
+  toUpdateLocationArgs,
+  updateLocation,
 } from "@/services/locationService";
 import { LocationFormValues } from "@/zodSchemas/locationSchema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,6 +22,18 @@ export function useLocationWithClient(id: string | undefined) {
     queryKey: ["locations", id],
     queryFn: () => getLocationWithClient(supabase, id!),
     enabled: !!id,
+  });
+}
+
+export function useUpdateLocation(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (values: LocationFormValues) =>
+      updateLocation(supabase, id, toUpdateLocationArgs(values)),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["locations"] });
+    },
   });
 }
 

@@ -1,8 +1,5 @@
 import { ClientFormInput } from "@/zodSchemas/clientSchema";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
-import FormField from "./formField";
-import Input from "./input";
-import FormSection from "./formsection";
 import {
   Building2,
   Globe,
@@ -14,6 +11,9 @@ import {
   Tag,
   User,
 } from "lucide-react";
+import FormSection from "../formsection";
+import FormField from "../formField";
+import Input from "../inputs/input";
 
 type ClientFormFieldsProps = {
   register: UseFormRegister<ClientFormInput>;

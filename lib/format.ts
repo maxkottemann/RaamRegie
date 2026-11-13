@@ -14,6 +14,7 @@ export function formatAddress({ street, number, postal_code, city }: AddressPart
   return [line1, line2].filter(Boolean).join(", ");
 }
 
-export function formatDate(date: string) {
+export function formatDate(date: string): string | null {
+  if (!date) return null;
   return format(new Date(date), "dd MMM yyyy", { locale: nl });
 }

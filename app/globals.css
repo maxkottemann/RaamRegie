@@ -2,29 +2,30 @@
 
 /*
  * Brand colors — the only values a tenant overrides.
- * Set them on a wrapper element at runtime:
- *   style={{ "--brand-primary": "#...", "--brand-secondary": "#..." }}
- * Everything derived (hover, soft, gradient) follows automatically.
+ * Set them on a wrapper element at runtime (ThemeProvider does this):
+ *   style={{ "--brand-primary": "#...", "--brand-nav": "#..." }}
+ * Hover, soft and line variants are derived below, so they always match.
+ *
+ * Room360 default: navy + royal blue from the same hue (≈ 220°), dark and light.
  */
 :root {
-  --brand-primary: #6a4cf0;
-  --brand-secondary: #3b6ff0;
+  --brand-primary: #102a56; /* royal blue: buttons, links, active nav item, focus */
+  --brand-nav: #2456c6; /* navy: sidebar, top bar, photo tint on the login page */
 
-  --background: #f6f7fb;
-  --foreground: #1e2a6e;
+  --background: #f4f7fb; /* page behind the cards, a touch of the same blue */
+  --foreground: #13223f;
 }
 
 /* inline: utilities resolve these at the element, so tenant overrides work */
 @theme inline {
   --color-primary: var(--brand-primary);
   --color-primary-hover: color-mix(in oklch, var(--brand-primary) 85%, black);
-  --color-primary-soft: color-mix(in oklch, var(--brand-primary) 10%, white);
+  --color-primary-soft: color-mix(in oklch, var(--brand-primary) 9%, white);
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: var(--brand-secondary);
-  --color-secondary-hover: color-mix(in oklch, var(--brand-secondary) 85%, black);
-  --color-secondary-soft: color-mix(in oklch, var(--brand-secondary) 10%, white);
-  --color-secondary-foreground: #ffffff;
+  --color-nav: var(--brand-nav);
+  --color-nav-hover: color-mix(in oklch, var(--brand-nav) 88%, white);
+  --color-nav-line: color-mix(in oklch, var(--brand-nav) 80%, white);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -33,34 +34,35 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* fixed for every tenant */
+/* fixed for every tenant: neutrals with a slight blue cast so they sit well with navy */
 @theme {
-  --color-ink: #1e2a6e;
-  --color-ink-soft: #2b3a8c;
-  --color-muted: #64708f;
-  --color-line: #e4e7f0;
-  --color-surface: #f6f7fb;
+  --color-ink: #13223f; /* headings, body text (a darker step of the navy) */
+  --color-ink-soft: #33435e; /* table cells, secondary emphasis */
+  --color-muted: #5b6a82; /* descriptions, idle icons, placeholders */
+  --color-line: #e1e7ef; /* borders, dividers */
+  --color-surface: #f4f6f9; /* table headers, hover rows, quiet fills */
 
-  --color-success: #1f9d55;
-  --color-warning: #e8a317;
+  /* status: solid for dots/icons, -soft for pill backgrounds, -ink for pill text */
+  --color-success: #2e9b4f;
+  --color-success-soft: #e6f4ea;
+  --color-success-ink: #1d7a3b;
+
+  /* cyan, so "in progress" pills don't look like the royal-blue buttons */
+  --color-info: #0e7fa8;
+  --color-info-soft: #e2f2f8;
+  --color-info-ink: #0b6587;
+
+  --color-warning: #e08a1e;
+  --color-warning-soft: #fdf0dc;
+  --color-warning-ink: #995800;
+
   --color-danger: #d64545;
-}
+  --color-danger-soft: #fbeaea;
+  --color-danger-ink: #b12f2f;
 
-/* the brand gradient — use this, never hand-write from-/to- for brand surfaces */
-@utility bg-brand {
-  background-image: linear-gradient(
-    to right in oklch,
-    var(--brand-primary),
-    var(--brand-secondary)
-  );
-}
-
-@utility bg-brand-vertical {
-  background-image: linear-gradient(
-    to bottom in oklch,
-    var(--brand-primary),
-    var(--brand-secondary)
-  );
+  /* shadows tinted with the navy instead of pure black */
+  --shadow-card: 0 1px 2px rgb(16 42 86 / 0.06);
+  --shadow-float: 0 12px 28px -10px rgb(16 42 86 / 0.22), 0 2px 6px -2px rgb(16 42 86 / 0.08);
 }
 
 body {

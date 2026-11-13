@@ -42,7 +42,7 @@ const SECTIONS: NavSection[] = [
   },
 ];
 
-const FALLBACK_LOGO = "/smalllogo.png";
+const FALLBACK_LOGO = "/fulllogo.png";
 const COMPANY_ROLES: Role[] = ["company_admin", "company_employee", "super_admin"];
 
 interface SidebarProps {

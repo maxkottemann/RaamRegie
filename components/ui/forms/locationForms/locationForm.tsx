@@ -1,13 +1,13 @@
 import { LocationFormInput, LocationFormValues } from "@/zodSchemas/locationSchema";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
-import Input from "./input";
-import FormField from "./formField";
 import { Building2, Hash, MapIcon, MapPin, Tag, UsersRound } from "lucide-react";
-import FormSection from "./formsection";
-import Select from "./select";
+import FormSection from "../formsection";
+import FormField from "../formField";
+import Select, { SelectOption } from "../inputs/select";
+import Input from "../inputs/input";
 
 type LocationFormFieldsProps = {
-  clientOptions: { label: string; value: string }[];
+  clientOptions: SelectOption[];
   register: UseFormRegister<LocationFormInput>;
   errors: FieldErrors<LocationFormInput>;
   control: Control<LocationFormInput, unknown, LocationFormValues>;

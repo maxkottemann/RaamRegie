@@ -70,7 +70,6 @@ export default function EditClientForm({ client }: { client: ClientDetail }) {
       <SubPageHeader
         title="Klant bewerken"
         description="Bewerk de gegevens van de klant"
-        icon={User}
         fallbackHref="/clients"
       />
 
@@ -82,7 +81,7 @@ export default function EditClientForm({ client }: { client: ClientDetail }) {
         <ClientFormFields register={register} errors={errors} />
         <aside className="space-y-4 lg:sticky lg:top-6">
           <div className="overflow-hidden rounded-xl border border-line bg-white">
-            <div className="h-1 bg-brand" />
+            <div className="bg-brand h-1" />
 
             <div className="p-5">
               <p className="text-[11px] font-medium tracking-wider text-muted/70 uppercase">
@@ -90,7 +89,7 @@ export default function EditClientForm({ client }: { client: ClientDetail }) {
               </p>
 
               <div className="mt-4 flex items-center gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand text-white shadow-sm">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-line bg-white text-ink shadow-card">
                   <User strokeWidth={1.75} className="h-5 w-5" />
                 </div>
                 <div className="min-w-0">
@@ -120,7 +119,7 @@ export default function EditClientForm({ client }: { client: ClientDetail }) {
                 </div>
                 <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface">
                   <div
-                    className="h-full rounded-full bg-brand transition-[width] duration-300 ease-out"
+                    className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
                     style={{ width: `${progress}%` }}
                   />
                 </div>

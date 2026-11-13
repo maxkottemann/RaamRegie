@@ -7,7 +7,6 @@ import type { ReactNode } from "react";
 type PageHeaderProps = {
   title: string;
   description?: string;
-  icon?: LucideIcon;
   actions?: ReactNode;
   showBack?: boolean;
   onBack?: () => void;
@@ -18,7 +17,6 @@ type PageHeaderProps = {
 export function PageHeader({
   title,
   description,
-  icon: Icon,
   actions,
   showBack = false,
   onBack,
@@ -48,25 +46,16 @@ export function PageHeader({
               onClick={handleBack}
               aria-label={backLabel}
               title={backLabel}
-              className="group -ml-2 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="-ml-2 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              <ArrowLeft
-                strokeWidth={1.75}
-                className="h-[18px] w-[18px] transition-transform duration-200 group-hover:-translate-x-0.5"
-              />
+              <ArrowLeft strokeWidth={1.75} className="h-[18px] w-[18px]" />
             </button>
             <span aria-hidden="true" className="h-6 w-px shrink-0 bg-line" />
           </>
         )}
 
-        {Icon && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand text-white shadow-sm">
-            <Icon strokeWidth={1.75} className="h-5 w-5" aria-hidden="true" />
-          </div>
-        )}
-
         <div className="min-w-0">
-          <h1 className="truncate text-xl font-semibold tracking-tight text-ink">{title}</h1>
+          <h1 className="truncate text-xl font-bold tracking-tight text-ink">{title}</h1>
           {description && <p className="mt-0.5 truncate text-sm text-muted">{description}</p>}
         </div>
       </div>

@@ -2,8 +2,8 @@
 
 import { PageHeader } from "@/components/headers/pageHeader";
 import LocationSelector from "@/components/selectors/locationSelector";
-import ErrorState from "@/components/states/errorState";
-import WindowLoader from "@/components/states/loadingState";
+import RoomError from "@/components/states/ErrorState";
+import RoomLoader from "@/components/states/loadingState";
 import Button from "@/components/ui/buttons/Button";
 import { useLocationsWithClient } from "@/hooks/locationHooks";
 import { BuildingComplex, BuildingComplexPlus } from "lucide-react";
@@ -14,8 +14,8 @@ export default function LocationPage() {
 
   const router = useRouter();
 
-  if (isPending) return <WindowLoader />;
-  if (error) return <ErrorState />;
+  if (isPending) return <RoomLoader />;
+  if (error) return <RoomError />;
 
   return (
     <div className="flex flex-col">

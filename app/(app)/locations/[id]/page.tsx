@@ -1,12 +1,12 @@
 "use client";
 
 import { SubPageHeader } from "@/components/headers/pageHeader";
-import ErrorState from "@/components/states/errorState";
-import WindowLoader from "@/components/states/loadingState";
+import RoomError from "@/components/states/ErrorState";
+import RoomLoader from "@/components/states/loadingState";
 import NotFoundState from "@/components/states/notFound";
 import Button from "@/components/ui/buttons/Button";
 import { useLocationWithClient } from "@/hooks/locationHooks";
-import { Edit } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function LocationDetailPage() {
@@ -15,8 +15,8 @@ export default function LocationDetailPage() {
 
   const { data: location, isPending, error } = useLocationWithClient(id);
 
-  if (isPending) return <WindowLoader />;
-  if (error) return <ErrorState />;
+  if (isPending) return <RoomLoader />;
+  if (error) return <RoomError />;
   if (!location) return <NotFoundState />;
 
   return (
@@ -27,6 +27,10 @@ export default function LocationDetailPage() {
         <div className="flex flex-row gap-2">
           <Button href={`/locations/${location.id}/edit`} variant="secondary" icon={Edit}>
             Bewerken
+          </Button>
+
+          <Button href={`/locations/${location.id}/addstories`} icon={Plus}>
+            Verdieping toevoegen
           </Button>
         </div>
       </div>

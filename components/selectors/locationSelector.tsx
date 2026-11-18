@@ -35,7 +35,7 @@ export default function LocationSelector({
     : locations;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex max-h-100 flex-col gap-3 overflow-y-auto">
       <div className="group/search relative">
         <Search
           strokeWidth={1.75}

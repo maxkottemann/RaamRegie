@@ -5,7 +5,7 @@ import RoomError from "@/components/states/ErrorState";
 import RoomLoader from "@/components/states/loadingState";
 import NotFoundState from "@/components/states/notFound";
 import Button from "@/components/ui/buttons/Button";
-import Card from "@/components/ui/card";
+import Card from "@/components/ui/cards/card";
 import { useClient } from "@/hooks/clientHooks";
 import { useCompany } from "@/hooks/companyHooks";
 import { ClipboardList, Clock, Edit, Landmark, MapPinIcon, Tag, User } from "lucide-react";
@@ -13,6 +13,7 @@ import { useParams } from "next/navigation";
 import ClientLocationsCard from "./_components/clientLocationCard";
 import ClientInfoChip from "./_components/infochip";
 import { formatAddress, formatDate } from "@/lib/format";
+import { useClientLocations } from "@/hooks/locationHooks";
 
 export default function ClientDetailPage() {
   const params = useParams();
@@ -22,9 +23,15 @@ export default function ClientDetailPage() {
 
   const { data: client, isPending, error } = useClient(id);
 
-  if (isPending) return <RoomLoader />;
-  if (error) return <RoomError />;
-  if (!client) return <NotFoundState />;
+  const {
+    data: locations,
+    isPending: isLocationPending,
+    error: locationsError,
+  } = useClientLocations(id);
+
+  if (isPending || isLocationPending) return <RoomLoader />;
+  if (error || locationsError) return <RoomError />;
+  if (!client || !locations) return <NotFoundState />;
 
   const canEditCompany = company?.id === client.owner_company_id;
 
@@ -56,7 +63,7 @@ export default function ClientDetailPage() {
         </Card>
         <Card icon={ClipboardList} title="Projectgegevens"></Card>
       </div>
-      <ClientLocationsCard locations={client.locations} />
+      <ClientLocationsCard locations={locations} />
     </div>
   );
 }

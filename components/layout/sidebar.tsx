@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, House, Settings, Users2, type LucideIcon } from "lucide-react";
+import {
+  Building2,
+  ClipboardListIcon,
+  House,
+  Settings,
+  Users2,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCompany } from "@/hooks/companyHooks";
 import { useProfile } from "@/context/ProfileContext";
@@ -34,6 +41,10 @@ const SECTIONS: NavSection[] = [
       { href: "/clients", label: "Klanten", icon: Users2 },
       { href: "/locations", label: "Locaties", icon: Building2 },
     ],
+  },
+  {
+    label: "Projecten",
+    links: [{ href: "/projects", label: "Projecten", icon: ClipboardListIcon }],
   },
 
   {
@@ -153,7 +164,7 @@ export default function Sidebar({ className, open, onClose }: SidebarProps) {
                       >
                         <span
                           aria-hidden="true"
-                          className={`absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-full bg-brand from-primary to-secondary transition-opacity duration-200 ${active ? "opacity-100" : "opacity-0"}`}
+                          className={`bg-brand to-secondary absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-full from-primary transition-opacity duration-200 ${active ? "opacity-100" : "opacity-0"}`}
                         />
                         <Icon
                           strokeWidth={1.75}

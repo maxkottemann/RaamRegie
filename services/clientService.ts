@@ -23,13 +23,7 @@ export async function getClients(supabase: SupabaseClient<Database>) {
 }
 
 export async function getClient(supabase: SupabaseClient<Database>, id: string) {
-  const { data, error } = await supabase
-    .from("clients")
-    .select(
-      "*,locations(id,name,checkin_procedure,city,postal_code,street,number,created_at,internal_id,external_id)",
-    )
-    .eq("id", id)
-    .maybeSingle();
+  const { data, error } = await supabase.from("clients").select("*").eq("id", id).maybeSingle();
 
   if (error) throw error;
   return data;

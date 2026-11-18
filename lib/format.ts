@@ -13,6 +13,11 @@ export function formatAddress({ street, number, postal_code, city }: AddressPart
   const line2 = [postal_code, city].filter(Boolean).join(" ");
   return [line1, line2].filter(Boolean).join(", ");
 }
+export function formatAddressNoPostalCode({ street, number, city }: AddressParts) {
+  const line1 = [street, number].filter(Boolean).join(" ");
+  const line2 = [city].filter(Boolean).join(" ");
+  return [line1, line2].filter(Boolean).join(", ");
+}
 
 export function formatDate(date: string): string | null {
   if (!date) return null;

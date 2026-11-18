@@ -4,6 +4,8 @@ import { LocationFormValues } from "@/zodSchemas/locationSchema";
 
 type CreateLocationArgs = Database["public"]["Functions"]["create_location"]["Args"];
 
+///selects
+
 export async function getLocationsWithClient(supabase: SupabaseClient<Database>) {
   const { data, error } = await supabase
     .from("locations")
@@ -27,6 +29,56 @@ export async function getLocationWithClient(supabase: SupabaseClient<Database>, 
   if (error) throw error;
   return data;
 }
+export async function getClientLocations(supabase: SupabaseClient<Database>, clientId: string) {
+  const { data, error } = await supabase
+    .from("locations")
+    .select(
+      "id, name, checkin_procedure, city, postal_code, street, number,internal_id,external_id,clients(id, name, city, postal_code, street, number)",
+    )
+    .eq("client_id", clientId);
+  if (error) throw error;
+  return data;
+}
+
+/// counts
+
+export async function getLocationStoryCount(
+  supabase: SupabaseClient,
+  locationId: string,
+): Promise<number> {
+  const { count, error } = await supabase
+    .from("stories")
+    .select("id", { count: "exact", head: true })
+    .eq("location_id", locationId);
+  if (error) throw error;
+  return count ?? 0;
+}
+
+export async function getLocationRoomCount(
+  supabase: SupabaseClient,
+  locationId: string,
+): Promise<number> {
+  const { count, error } = await supabase
+    .from("rooms")
+    .select("id", { count: "exact", head: true })
+    .eq("location_id", locationId);
+  if (error) throw error;
+  return count ?? 0;
+}
+
+export async function getLocationItemsCount(
+  supabase: SupabaseClient,
+  locationId: string,
+): Promise<{ category: string; item_count: number; total_quantity: number }[]> {
+  const { data, error } = await supabase.rpc("get_location_item_counts", {
+    p_location_id: locationId,
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+///mutations
 
 export async function updateLocation(
   supabase: SupabaseClient<Database>,
@@ -82,3 +134,4 @@ export async function createLocation(supabase: SupabaseClient<Database>, args: C
 export type LocationsWithClient = Awaited<ReturnType<typeof getLocationsWithClient>>;
 export type LocationWithClientListItem = Awaited<ReturnType<typeof getLocationsWithClient>>[number];
 export type LocationDetail = Awaited<ReturnType<typeof getLocationWithClient>>;
+export type LocationItemCount = Awaited<ReturnType<typeof getLocationItemsCount>>;

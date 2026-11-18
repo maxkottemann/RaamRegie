@@ -1,6 +1,6 @@
 import { SubPageHeader } from "@/components/headers/pageHeader";
 import Button from "@/components/ui/buttons/Button";
-import ClientFormFields from "@/components/ui/forms/clientForm";
+import ClientFormFields from "@/components/ui/forms/clientForms/clientForm";
 import { useToast } from "@/context/ToastContext";
 import { useUpdateClient } from "@/hooks/clientHooks";
 import { REQUIRED_FIELDS } from "@/lib/constants";

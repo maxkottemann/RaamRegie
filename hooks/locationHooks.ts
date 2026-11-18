@@ -1,6 +1,10 @@
 import { supabase } from "@/lib/browserClient";
 import {
   createLocation,
+  getClientLocations,
+  getLocationItemsCount,
+  getLocationRoomCount,
+  getLocationStoryCount,
   getLocationsWithClient,
   getLocationWithClient,
   toCreateLocationArgs,
@@ -9,7 +13,7 @@ import {
 } from "@/services/locationService";
 import { LocationFormValues } from "@/zodSchemas/locationSchema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
+///selects
 export function useLocationsWithClient() {
   return useQuery({
     queryKey: ["locations", "with-client"],
@@ -24,6 +28,42 @@ export function useLocationWithClient(id: string | undefined) {
     enabled: !!id,
   });
 }
+
+export function useClientLocations(id: string | undefined) {
+  return useQuery({
+    queryKey: ["locations", id],
+    queryFn: () => getClientLocations(supabase, id!),
+    enabled: !!id,
+  });
+}
+
+///counts
+
+export function useLocationStoryCount(id: string | undefined) {
+  return useQuery({
+    queryKey: ["stories"],
+    queryFn: () => getLocationStoryCount(supabase, id!),
+    enabled: !!id,
+  });
+}
+
+export function useLocationRoomCount(id: string | undefined) {
+  return useQuery({
+    queryKey: ["rooms"],
+    queryFn: () => getLocationRoomCount(supabase, id!),
+    enabled: !!id,
+  });
+}
+
+export function useLocationItemCount(id: string | undefined) {
+  return useQuery({
+    queryKey: ["items"],
+    queryFn: () => getLocationItemsCount(supabase, id!),
+    enabled: !!id,
+  });
+}
+
+///mutations
 
 export function useUpdateLocation(id: string) {
   const queryClient = useQueryClient();

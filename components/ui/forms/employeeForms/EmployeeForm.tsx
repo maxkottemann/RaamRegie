@@ -19,7 +19,7 @@ export default function EmployeeFormFields({
   errors,
   isEditing,
 }: EmployeeFormFieldProps) {
-  const { data: profileOptions } = useCompanyProfileOptions();
+  const { data: profileOptions, isFetching } = useCompanyProfileOptions();
   return (
     <div className="space-y-6">
       <FormSection

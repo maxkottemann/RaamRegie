@@ -15,6 +15,16 @@ export async function getVehiclesBasics(supabase: SupabaseClient<Database>) {
   return data;
 }
 
+export async function getVehicleOptions(supabase: SupabaseClient<Database>) {
+  const { data, error } = await supabase
+    .from("vehicles")
+    .select("id,name,license_plate")
+    .is("archived_at", null);
+
+  if (error) throw error;
+
+  return data;
+}
 export function toCreateVanArgs(values: VehicleFormValues): CreateVehicleArgs {
   return {
     p_name: values.name,
@@ -53,9 +63,11 @@ export async function removeVehicle(supabase: SupabaseClient<Database>, vehicleI
 
   if (error) throw error;
 
-  console.log(error);
   return data;
 }
 
 export type VehicleBasics = Awaited<ReturnType<typeof getVehiclesBasics>>;
 export type VehicleBasic = VehicleBasics[number];
+
+export type VehicleOptions = Awaited<ReturnType<typeof getVehicleOptions>>;
+export type VehicleOption = VehicleOptions[number];

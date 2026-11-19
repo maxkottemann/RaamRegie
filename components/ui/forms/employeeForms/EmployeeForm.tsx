@@ -1,15 +1,23 @@
-import { Controller, FieldErrors, UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseControllerProps,
+  UseFormRegister,
+} from "react-hook-form";
 import FormSection from "../formsection";
-import { User } from "lucide-react";
+import { Truck, User } from "lucide-react";
 import FormField from "../formField";
 import Input from "../inputs/input";
-import { EmployeeFormInput } from "@/zodSchemas/employeeSchema";
+import { EmployeeFormInput, EmployeeFormValues } from "@/zodSchemas/employeeSchema";
 import Select from "../inputs/select";
 import { useCompanyProfileOptions } from "@/hooks/profileHooks";
+import { CustomSelect } from "../inputs/customSelect";
+import { useVehicleOptions } from "@/hooks/staff/vehicleHooks";
 
 interface EmployeeFormFieldProps {
   register: UseFormRegister<EmployeeFormInput>;
-  control: UseFormCo;
+  control: Control<EmployeeFormInput, unknown, EmployeeFormValues>;
   errors: FieldErrors<EmployeeFormInput>;
   isEditing: boolean;
 }
@@ -18,8 +26,12 @@ export default function EmployeeFormFields({
   register,
   errors,
   isEditing,
+  control,
 }: EmployeeFormFieldProps) {
   const { data: profileOptions, isFetching } = useCompanyProfileOptions();
+
+  const { data: vehicleOptions } = useVehicleOptions();
+
   return (
     <div className="space-y-6">
       <FormSection
@@ -36,28 +48,49 @@ export default function EmployeeFormFields({
           />
         </FormField>
 
-        <FormField id="account" label="Account" error={errors.profile_id?.message}>
+        <FormField id="account" label="Bijbehorend account" error={errors.profile_id?.message}>
           <Controller
-            name="details.curtain_type_id"
+            name="profile_id"
             control={control}
             render={({ field }) => (
               <Select
+                clearable
                 id="client_id"
-                options={profileOptions?.map((p) => ({ label: p.name, value: p.id })) ?? []}
+                options={profileOptions?.map((p) => ({ label: p?.name, value: p?.id })) ?? []}
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 disabled={isFetching}
-                invalid={!!error}
+                invalid={!!errors?.profile_id}
               />
             )}
           />
-          <Select
-            options={profileOptions?.map((p) => ({ label: p.name, value: p.id })) ?? []}
-            id="account"
-            value=""
-            invalid={!!errors.profile_id}
-            {...register("profile_id")}
+        </FormField>
+      </FormSection>
+
+      <FormSection
+        title="Voertuig"
+        icon={Truck}
+        description="Selecteer het voertuig waar deze medewerker standaard bijhoort"
+      >
+        <FormField id="vehicle" label="Standaard voertuig" error={errors.profile_id?.message}>
+          <Controller
+            name="vehicle_ids"
+            control={control}
+            render={({ field }) => (
+              <CustomSelect
+                multiple
+                options={
+                  vehicleOptions?.map((p) => ({
+                    label: p?.name,
+                    value: p?.id,
+                    description: p?.license_plate ?? "",
+                  })) ?? []
+                }
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
           />
         </FormField>
       </FormSection>

@@ -36,15 +36,15 @@ const SECTIONS: NavSection[] = [
     links: [{ href: "/dashboard", label: "Dashboard", icon: House }],
   },
   {
+    label: "Projecten",
+    links: [{ href: "/projects", label: "Projecten", icon: ClipboardListIcon }],
+  },
+  {
     label: "Klanten & Locaties",
     links: [
       { href: "/clients", label: "Klanten", icon: Users2 },
       { href: "/locations", label: "Locaties", icon: Building2 },
     ],
-  },
-  {
-    label: "Projecten",
-    links: [{ href: "/projects", label: "Projecten", icon: ClipboardListIcon }],
   },
 
   {

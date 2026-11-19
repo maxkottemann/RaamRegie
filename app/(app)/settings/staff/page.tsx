@@ -11,6 +11,7 @@ import { Employee } from "@/services/staff/employeeService";
 import { Plus, UserCheck } from "lucide-react";
 import { useMemo, useState } from "react";
 import EmployeeFormModal from "./_components/EmployeeModal";
+import DeleteEmployeeModal from "./_components/DeleteEmployeeModal";
 
 type EmployeeDialogue =
   | { type: "create" }
@@ -69,6 +70,11 @@ export default function SettingsStaffPage() {
         open={dialog?.type === "create" || dialog?.type === "edit"}
         employee={dialog?.type === "edit" ? dialog.employee : undefined}
         onClose={() => setDialog(null)}
+      />
+      <DeleteEmployeeModal
+        onClose={() => setDialog(null)}
+        open={dialog?.type === "delete"}
+        employee={dialog?.type === "delete" ? dialog.employee : undefined}
       />
     </div>
   );

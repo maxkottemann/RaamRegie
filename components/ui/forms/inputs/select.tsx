@@ -19,6 +19,7 @@ type SelectProps = {
   invalid?: boolean;
   disabled?: boolean;
   emptyText?: string;
+  clearable?: boolean;
   "aria-describedby"?: string;
 };
 
@@ -28,6 +29,7 @@ export default function Select({
   value,
   onChange,
   onBlur,
+  clearable,
   placeholder = "Maak een keuze",
   invalid = false,
   disabled = false,
@@ -36,8 +38,12 @@ export default function Select({
 }: SelectProps) {
   const selected = options.find((o) => o.value === value);
 
+  function handleChange(next: string) {
+    onChange(clearable && next === value ? "" : next);
+  }
+
   return (
-    <Listbox value={value} onChange={onChange} disabled={disabled}>
+    <Listbox value={value} onChange={handleChange} disabled={disabled}>
       <ListboxButton
         id={id}
         onBlur={onBlur}
@@ -79,7 +85,7 @@ export default function Select({
                   <p className="truncate text-xs text-muted">{option.description}</p>
                 )}
               </div>
-              <span className="invisible flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand group-data-selected:visible">
+              <span className="bg-brand invisible flex h-5 w-5 shrink-0 items-center justify-center rounded-full group-data-selected:visible">
                 <Check strokeWidth={2.5} className="h-3 w-3 text-white" />
               </span>
             </ListboxOption>

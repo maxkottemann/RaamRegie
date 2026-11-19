@@ -38,7 +38,7 @@ export function toCreateEmployeeArgs(values: EmployeeFormValues) {
   return {
     p_name: values.name,
     p_profile_id: values.profile_id ?? undefined,
-    v_vehicle_ids: values.vehicle_ids,
+    p_vehicle_ids: values.vehicle_ids,
   };
 }
 
@@ -59,6 +59,14 @@ export function toUpdateEmployeeArgs(values: EmployeeFormValues, employeeId: str
 export async function updateEmployee(supabase: SupabaseClient<Database>, args: UpdateEmployeeArgs) {
   const { data, error } = await supabase.rpc("update_employee", args);
 
+  if (error) throw error;
+  return data;
+}
+
+export async function removeEmployee(supabase: SupabaseClient<Database>, employeeId: string) {
+  const { data, error } = await supabase.rpc("remove_employee", {
+    p_employee_id: employeeId,
+  });
   if (error) throw error;
   return data;
 }

@@ -39,20 +39,6 @@ export default function ClientLocationsCard({ locations }: ClientLocationsCardPr
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          <div className="group/search relative">
-            <Search
-              strokeWidth={1.75}
-              className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted/60 transition-colors group-focus-within/search:text-primary"
-            />
-            <input
-              type="search"
-              placeholder="Zoek op locatie of plaats"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-10 w-full rounded-lg border border-line bg-surface/70 pr-3 pl-9 text-sm text-ink transition outline-none placeholder:text-muted/50 hover:border-muted/30 hover:bg-white focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
-            />
-          </div>
-
           {filtered.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted">
               Geen locaties gevonden voor “{searchTerm.trim()}”.

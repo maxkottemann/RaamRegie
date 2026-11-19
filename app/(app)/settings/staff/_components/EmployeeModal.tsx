@@ -92,7 +92,12 @@ export default function EmployeeFormModal({ open, employee, onClose }: EmployeeF
       submitDisabled={isEdit && !isDirty}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <EmployeeFormFields register={register} errors={errors} isEditing={isEdit} />
+      <EmployeeFormFields
+        register={register}
+        control={control}
+        errors={errors}
+        isEditing={isEdit}
+      />
     </AddModal>
   );
 }

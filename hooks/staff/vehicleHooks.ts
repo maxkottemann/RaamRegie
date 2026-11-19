@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/browserClient";
 import {
   createVehicle,
+  getVehicleOptions,
   getVehiclesBasics,
   removeVehicle,
   toCreateVanArgs,
@@ -14,6 +15,13 @@ export function useVehicleBasics() {
   return useQuery({
     queryKey: ["vehicles"],
     queryFn: () => getVehiclesBasics(supabase),
+  });
+}
+
+export function useVehicleOptions() {
+  return useQuery({
+    queryKey: ["vehicles"],
+    queryFn: () => getVehicleOptions(supabase),
   });
 }
 

@@ -3,6 +3,7 @@ import { toUpdateClientArgs } from "@/services/clientService";
 import {
   createEmployee,
   getEmployees,
+  removeEmployee,
   toCreateEmployeeArgs,
   toUpdateEmployeeArgs,
   updateEmployee,
@@ -35,6 +36,17 @@ export function useUpdateEmployee() {
   return useMutation({
     mutationFn: ({ values, employeeId }: { values: EmployeeFormValues; employeeId: string }) =>
       updateEmployee(supabase, toUpdateEmployeeArgs(values, employeeId)),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+}
+
+export function useRemoveEmployee() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (employeeId: string) => removeEmployee(supabase, employeeId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },

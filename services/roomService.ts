@@ -22,7 +22,10 @@ export async function getRoomsFromStory(
   return { rooms: data, total: count ?? 0 };
 }
 
-export async function createRoom(supabase: SupabaseClient, values: TablesInsert<"rooms">) {
+export async function createRoom(
+  supabase: SupabaseClient<Database>,
+  values: TablesInsert<"rooms">,
+) {
   const { data, error } = await supabase.from("rooms").insert(values);
 
   if (error) throw error;

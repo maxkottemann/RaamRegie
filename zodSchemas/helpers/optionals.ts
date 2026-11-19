@@ -1,5 +1,8 @@
 import z from "zod";
 
+const POSTAL_CODE_REGEX = /^[1-9]\d{3}\s?[a-zA-Z]{2}$/;
+const POSTAL_CODE_MESSAGE = "Gebruik het formaat 1234 AB";
+
 export const optionalText = z
   .string()
   .trim()
@@ -23,5 +26,13 @@ export const optionalDate = z
   .transform((v) => (v === "" ? null : v));
 
 export const optionalUuid = z
-  .union([z.literal(""), z.string().uuid("Ongeldige keuze")])
+  .union([z.literal(""), z.uuid("Ongeldige keuze")])
   .transform((v) => (v === "" ? null : v));
+
+const formatPostalCode = (value: string) => `${value.slice(0, 4)} ${value.slice(-2).toUpperCase()}`;
+
+export const optionalPostalCode = z
+  .string()
+  .trim()
+  .refine((v) => v === "" || POSTAL_CODE_REGEX.test(v), { error: POSTAL_CODE_MESSAGE })
+  .transform((v) => (v === "" ? null : formatPostalCode(v)));

@@ -23,3 +23,7 @@ export function formatDate(date: string): string | null {
   if (!date) return null;
   return format(new Date(date), "dd MMM yyyy", { locale: nl });
 }
+
+export function formatNumber2Decimals(val: number): string {
+  return val.toLocaleString("nl-NL", { maximumFractionDigits: 2 });
+}

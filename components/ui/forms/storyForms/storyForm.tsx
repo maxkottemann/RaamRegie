@@ -11,7 +11,7 @@ type StoryFormFieldsProps = {
   control: Control<StoryFormInput, unknown, StoryFormValues>;
 };
 
-export default function StoryFormFields({ register, errors, control }: StoryFormFieldsProps) {
+export default function StoryFormFields({ register, errors }: StoryFormFieldsProps) {
   return (
     <div className="space-y-6">
       <FormSection icon={Layers} title="Verdieping" description="Voeg een locatie toe">

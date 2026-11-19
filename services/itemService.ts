@@ -1,8 +1,9 @@
+import { Database } from "@/types/database.types";
 import { CurtainFormValues } from "@/zodSchemas/itemSchema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getRoomitems(
-  supabase: SupabaseClient,
+  supabase: SupabaseClient<Database>,
   roomId: string,
   page = 0,
   pageSize = 25,
@@ -21,7 +22,7 @@ export async function getRoomitems(
   return { items: data, total: count ?? 0 };
 }
 
-export async function deleteItem(supabase: SupabaseClient, itemId: string) {
+export async function deleteItem(supabase: SupabaseClient<Database>, itemId: string) {
   const { error } = await supabase.rpc("soft_delete_item", {
     p_item_id: itemId,
   });

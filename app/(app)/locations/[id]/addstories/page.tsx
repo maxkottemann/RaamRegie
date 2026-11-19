@@ -511,7 +511,7 @@ export default function AddStoryPage() {
       <DeleteModal
         open={!!deletingItem}
         onConfirm={() =>
-          deleteItem.mutate(deletingItem?.id, {
+          deleteItem.mutate(deletingItem?.id ?? "", {
             onSuccess: () => {
               setDeletingItem(null);
               showToast("Object verwijderd", "success");

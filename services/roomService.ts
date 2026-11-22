@@ -1,3 +1,4 @@
+import { ModuleKey } from "@/modules/types/types";
 import { Database, TablesInsert, TablesUpdate } from "@/types/database.types";
 import { RoomFormvalues } from "@/zodSchemas/roomSchema";
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -20,6 +21,25 @@ export async function getRoomsFromStory(
 
   if (error) throw error;
   return { rooms: data, total: count ?? 0 };
+}
+
+export async function getRoomsFromStoryWithItemCounts(
+  supabase: SupabaseClient<Database>,
+  storyId: string,
+  module: "curtain" | "floor",
+) {
+  const { data, error } = await supabase
+    .from("rooms")
+    .select("id, name, function, category, section,items!inner(count)")
+    .eq("story_id", storyId)
+    .order("name", { ascending: true })
+    .eq("items.category", module);
+
+  if (error) throw error;
+  return data.map(({ items, ...room }) => ({
+    ...room,
+    item_count: items[0]?.count,
+  }));
 }
 
 export async function createRoom(

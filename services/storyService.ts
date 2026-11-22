@@ -9,13 +9,17 @@ export async function getStoriesFromLocation(
 ) {
   const { data, error } = await supabase
     .from("stories")
-    .select("id,location_id,name")
-    .eq("location_id", locationId);
+    .select("id, location_id, name, rooms(count)")
+    .eq("location_id", locationId)
+    .order("name");
 
   if (error) throw error;
-  return data;
-}
 
+  return data.map(({ rooms, ...story }) => ({
+    ...story,
+    room_count: rooms[0]?.count ?? 0,
+  }));
+}
 export async function createStory(supabase: SupabaseClient<Database>, args: CreateStoryArgs) {
   const { error } = await supabase.from("stories").insert(args);
 

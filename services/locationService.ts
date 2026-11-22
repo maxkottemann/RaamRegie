@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, TablesUpdate } from "@/types/database.types";
 import { LocationFormValues } from "@/zodSchemas/locationSchema";
+import { ModuleKey } from "@/modules/types/types";
 
 type CreateLocationArgs = Database["public"]["Functions"]["create_location"]["Args"];
 
@@ -36,6 +37,15 @@ export async function getClientLocations(supabase: SupabaseClient<Database>, cli
       "id, name, checkin_procedure, city, postal_code, street, number,internal_id,external_id,clients(id, name, city, postal_code, street, number)",
     )
     .eq("client_id", clientId);
+  if (error) throw error;
+  return data;
+}
+
+export async function getLocationOptionsForPlanning(supabase: SupabaseClient<Database>) {
+  const { data, error } = await supabase
+    .from("locations")
+    .select("id,name,city,postal_code,street,number");
+
   if (error) throw error;
   return data;
 }

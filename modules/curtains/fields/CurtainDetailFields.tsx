@@ -1,14 +1,13 @@
 import { CurtainFormInput } from "@/zodSchemas/itemSchema";
 import { Controller, useFormContext } from "react-hook-form";
-import FormSection from "../../formsection";
 import { ListPlus, MoveHorizontal, MoveVertical, Palette, Ruler, Tag, Type } from "lucide-react";
-import FormField from "../../formField";
-import Input from "../../inputs/input";
-import DateInput from "../../inputs/dateInput";
 import { useCurtainMaterialOptions, useCurtainTypeOptions } from "@/hooks/itemHooks/curtainHooks";
-import Select from "../../inputs/select";
-import LoadingState from "@/components/states/loadingState";
 import ErrorState from "@/components/states/ErrorState";
+import FormSection from "@/components/ui/forms/formsection";
+import FormField from "@/components/ui/forms/formField";
+import Input from "@/components/ui/forms/inputs/input";
+import DateInput from "@/components/ui/forms/inputs/dateInput";
+import Select from "@/components/ui/forms/inputs/select";
 
 export default function CurtainDetailsFields() {
   const {
@@ -34,7 +33,7 @@ export default function CurtainDetailsFields() {
         title="Afmetingen"
         description="Vul de afmetingen in van het gordijn"
       >
-        <FormField id="hei" label="Hoogte" error={errors?.details?.height?.message}>
+        <FormField id="heigt" label="Hoogte" error={errors?.details?.height?.message}>
           <Input
             id="height"
             type="number"

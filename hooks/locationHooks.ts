@@ -3,6 +3,7 @@ import {
   createLocation,
   getClientLocations,
   getLocationItemsCount,
+  getLocationOptionsForPlanning,
   getLocationRoomCount,
   getLocationStoryCount,
   getLocationsWithClient,
@@ -60,6 +61,13 @@ export function useLocationItemCount(id: string | undefined) {
     queryKey: ["items"],
     queryFn: () => getLocationItemsCount(supabase, id!),
     enabled: !!id,
+  });
+}
+
+export function useLocationOptionsForPlanning() {
+  return useQuery({
+    queryKey: ["locations"],
+    queryFn: () => getLocationOptionsForPlanning(supabase),
   });
 }
 

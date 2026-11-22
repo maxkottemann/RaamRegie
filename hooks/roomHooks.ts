@@ -3,6 +3,7 @@ import {
   createRoom,
   deleteRoom,
   getRoomsFromStory,
+  getRoomsFromStoryWithItemCounts,
   toRoomInsert,
   toRoomUpdate,
   updateRoom,
@@ -14,6 +15,17 @@ export function useRoomsFromStory(id: string | undefined, page = 0, page_size = 
   return useQuery({
     queryKey: ["stories", id, "rooms", { page, page_size }],
     queryFn: () => getRoomsFromStory(supabase, id!, page, page_size),
+    enabled: !!id,
+  });
+}
+
+export function useRoomsFromStoryWithItemCounts(
+  id: string | undefined,
+  module: "curtain" | "floor",
+) {
+  return useQuery({
+    queryKey: ["stories", id, "rooms"],
+    queryFn: () => getRoomsFromStoryWithItemCounts(supabase, id!, module),
     enabled: !!id,
   });
 }

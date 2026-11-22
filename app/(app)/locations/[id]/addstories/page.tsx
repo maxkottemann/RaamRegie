@@ -4,7 +4,6 @@ import { SubPageHeader } from "@/components/headers/pageHeader";
 import RoomError from "@/components/states/ErrorState";
 import NotFoundState from "@/components/states/notFound";
 import Button from "@/components/ui/buttons/Button";
-import CurtainInsertForm from "@/components/ui/forms/itemForms/curtainForm";
 import ItemSelector from "@/components/ui/hierarchies/itemSelector";
 import RoomSelector from "@/components/ui/hierarchies/roomSelector";
 import StorySelector from "@/components/ui/hierarchies/storySelector";
@@ -32,6 +31,7 @@ import ItemTypePicker from "./_components/ItemPicker";
 import RoomFormFields from "@/components/ui/forms/roomForms/RoomForm";
 import StoryFormFields from "@/components/ui/forms/storyForms/storyForm";
 import LoadingState from "@/components/states/loadingState";
+import CurtainInsertForm from "@/modules/curtains/itemForm";
 
 const EMPTY_ROOM = { name: "", function: "", category: "", section: "" };
 

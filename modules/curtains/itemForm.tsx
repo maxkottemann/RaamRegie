@@ -1,3 +1,4 @@
+"use client";
 import {
   CurtainFormInput,
   CurtainFormSchema,
@@ -6,11 +7,12 @@ import {
 } from "@/zodSchemas/itemSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import AddModal from "../../modals/addModal";
-import BaseItemInsertForm from "./baseItemForm";
 import { useCreateCurtainItem } from "@/hooks/itemHooks";
 import { Blinds } from "lucide-react";
+import AddModal from "@/components/ui/modals/addModal";
+import BaseItemInsertForm from "@/components/ui/forms/itemForms/baseItemForm";
 import CurtainDetailsFields from "./fields/CurtainDetailFields";
+import { getErrorMessage } from "@/lib/dbErrors";
 
 interface CurtainInsertFormProps {
   roomId: string;
@@ -48,7 +50,7 @@ export default function CurtainInsertForm({ roomId, onClose, onCreated }: Curtai
       icon={Blinds}
       size="lg"
       loading={createCurtain.isPending}
-      error={createCurtain.error ? "Gordijn kon niet worden toegevoegd." : undefined}
+      error={createCurtain.error ? getErrorMessage(createCurtain.error) : undefined}
     >
       <FormProvider {...form}>
         <BaseItemInsertForm />

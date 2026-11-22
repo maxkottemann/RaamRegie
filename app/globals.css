@@ -43,10 +43,9 @@
   --color-surface: #f4f6f9; /* table headers, hover rows, quiet fills */
 
   /* status: solid for dots/icons, -soft for pill backgrounds, -ink for pill text */
-  --color-success: #2e9b4f;
-  --color-success-soft: #e6f4ea;
-  --color-success-ink: #1d7a3b;
-
+  --color-success: #2f9e44;
+  --color-success-soft: #e8f5ea;
+  --color-success-ink: #1f7a32;
   /* cyan, so "in progress" pills don't look like the royal-blue buttons */
   --color-info: #0e7fa8;
   --color-info-soft: #e2f2f8;

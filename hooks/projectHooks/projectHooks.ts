@@ -1,10 +1,10 @@
 import { supabase } from "@/lib/browserClient";
-import { getProjectsForList } from "@/services/projectServices/projectService";
+import { getProjectsForList, ProjectFilters } from "@/services/projectServices/projectService";
 import { useQuery } from "@tanstack/react-query";
 
-export function useProjectList(page = 0, pageSize = 25) {
+export function useProjectList(filters: ProjectFilters) {
   return useQuery({
     queryKey: ["projects"],
-    queryFn: () => getProjectsForList(supabase, page, pageSize),
+    queryFn: () => getProjectsForList(supabase, filters),
   });
 }

@@ -16,7 +16,12 @@ import {
 } from "lucide-react";
 
 const TYPES: { value: ItemCategory; label: string; description: string; icon: LucideIcon }[] = [
-  { value: "curtain", label: "Gordijn", description: "Raam- en separatiegordijnen", icon: Blinds },
+  {
+    value: "curtain",
+    label: "Raambekleding",
+    description: "Raam- en separatiegordijnen",
+    icon: Blinds,
+  },
   { value: "chair", label: "Stoel", description: "Bezoekers- en patiëntstoelen", icon: Armchair },
   { value: "bed", label: "Bed", description: "Patiëntbedden", icon: BedSingle },
   { value: "floor", label: "Vloer", description: "Vloeroppervlak per ruimte", icon: Grid3x3 },

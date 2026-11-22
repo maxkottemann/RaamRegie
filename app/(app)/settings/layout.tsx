@@ -4,8 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
+  Box,
   ChevronDown,
   Settings,
+  Sparkle,
   Truck,
   User,
   UserCheck,
@@ -50,6 +52,25 @@ const menuItems: { label: string; items: MenuItem[] }[] = [
         label: "Vloot",
         href: "/settings/fleet",
         icon: Truck,
+        isAdmin: false,
+        isCompany: true,
+      },
+    ],
+  },
+  {
+    label: "Types & methodes",
+    items: [
+      {
+        label: "Methodes",
+        href: "/settings/cleaning_methods",
+        icon: Sparkle,
+        isAdmin: false,
+        isCompany: true,
+      },
+      {
+        label: "Types",
+        href: "/settings/types",
+        icon: Box,
         isAdmin: false,
         isCompany: true,
       },

@@ -1,0 +1,1 @@
+alter table public.company_clients add column module_key not null; 

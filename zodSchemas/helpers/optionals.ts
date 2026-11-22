@@ -16,7 +16,10 @@ export const optionalEmail = z
   .transform((value) => (value === "" ? null : value));
 
 export const optionalNumber = z
-  .union([z.literal(""), z.coerce.number().positive()])
+  .union([z.literal(""), z.coerce.number().positive({ error: "Moet groter dan 0 zijn" })])
+  .transform((v) => (v === "" ? null : v));
+export const optionalNonNegativeNumber = z
+  .union([z.literal(""), z.coerce.number().nonnegative({ error: "Mag niet negatief zijn" })])
   .transform((v) => (v === "" ? null : v));
 export const optionalInt = z
   .union([z.literal(""), z.coerce.number().int().positive()])
@@ -36,3 +39,5 @@ export const optionalPostalCode = z
   .trim()
   .refine((v) => v === "" || POSTAL_CODE_REGEX.test(v), { error: POSTAL_CODE_MESSAGE })
   .transform((v) => (v === "" ? null : formatPostalCode(v)));
+
+export const isoDate = (error: string) => z.iso.date({ error });

@@ -9,7 +9,7 @@ export async function getRoomitems(
   page = 0,
   pageSize = 25,
 ) {
-  const from = page * 25;
+  const from = page * pageSize;
   const to = from + pageSize - 1;
 
   const { data, error, count } = await supabase

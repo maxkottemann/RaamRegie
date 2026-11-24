@@ -51,6 +51,8 @@ export type ProjectFormValues = z.output<typeof ProjectSchema>;
 
 export type PlannedItem = z.infer<typeof PlannedItemSchema>;
 
+export type VanDay = z.infer<typeof PlannedVehicleSchema>;
+
 export const EMPTY_PROJECT: ProjectFormInput = {
   name: "",
   start_date: "",

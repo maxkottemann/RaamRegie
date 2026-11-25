@@ -29,7 +29,9 @@ export interface ProjectPlannerProps {
   value: PlannedItem[];
   onChange: (items: PlannedItem[]) => void;
 }
-export interface ProjectDetailProps {}
+export interface ProjectDetailProps {
+  projectId: string;
+}
 export interface ModuleDefinition {
   key: ModuleKey;
   label: string; // "Gordijnen"

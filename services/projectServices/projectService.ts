@@ -79,7 +79,44 @@ export async function createProject(
 ) {
   const { data, error } = await supabase.rpc("create_project", toCreateProjectArgs(module, values));
 
-  console.log(error);
+  if (error) throw error;
+  return data;
+}
+
+export async function getProject(supabase: SupabaseClient<Database>, projectId: string) {
+  const { data, error } = await supabase
+    .from("projects")
+    .select(
+      "name,profiles!projects_planned_by_fkey(id,name),name,description,start_date,end_date,status,type,location_name,location_address,client_name,internal_id,external_id,project_code,project_items!inner(count)",
+    )
+    .eq("id", projectId)
+    .single();
+
+  if (error) throw error;
+  return { ...data, item_count: data.project_items.length };
+}
+
+export async function getProjectVehicles(supabase: SupabaseClient<Database>, projectId: string) {
+  const { data, error } = await supabase
+    .from("project_vehicles")
+    .select(
+      "distance,work_date,vehicle_id,vehicle_name,license_plate,vehicles!inner(co2,co2_old),project_vehicle_employees(employees(id,name))",
+    )
+    .eq("project_id", projectId);
+
+  if (error) throw error;
+  return data.map((d) => ({
+    ...d,
+    employees: d.project_vehicle_employees.map((pve) => pve.employees),
+    co2Data: d.vehicles,
+  }));
+}
+
+export async function getProjectCo2Data(supabase: SupabaseClient<Database>, projectId: string) {
+  const { data, error } = await supabase
+    .rpc("get_project_co2", { p_project_id: projectId })
+    .single();
+
   if (error) throw error;
   return data;
 }
@@ -87,3 +124,8 @@ export async function createProject(
 export type BasicProjectPage = Awaited<ReturnType<typeof getProjectsForList>>;
 export type BasicProjectList = BasicProjectPage["projects"];
 export type BasicProjectitem = BasicProjectList[number];
+
+export type ProjectDetail = Awaited<ReturnType<typeof getProject>>;
+
+export type ProjectVehicles = Awaited<ReturnType<typeof getProjectVehicles>>;
+export type ProjectVehicle = ProjectVehicles[number];

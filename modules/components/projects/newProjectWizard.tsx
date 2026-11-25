@@ -20,7 +20,6 @@ import { Controller, FormProvider, useForm, useFormContext, useWatch } from "rea
 import FormSection from "@/components/ui/forms/formsection";
 import NewProjectSummarySideBar from "./_components/NewProjectSummarySidebar";
 import SelectProjectVehicleForm from "@/components/ui/forms/projectForms/selectProjectVehicleForm";
-import NewProjectVehicleSelector from "@/components/ui/forms/projectForms/newProjectVehicleSelector";
 
 export default function NewProjectWizard({ module }: { module: ModuleKey }) {
   const router = useRouter();
@@ -93,8 +92,6 @@ export default function NewProjectWizard({ module }: { module: ModuleKey }) {
 
             {/* 3. later: <ProjectVehicleFields /> */}
             <SelectProjectVehicleForm />
-
-            <NewProjectVehicleSelector />
 
             {/* submit (mobile) */}
             <div className="flex justify-end lg:hidden">

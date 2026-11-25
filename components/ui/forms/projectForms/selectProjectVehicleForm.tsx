@@ -6,17 +6,14 @@ import FormSection from "../formsection";
 import { CalendarDays, Check, Copy, Eraser, Truck, Users, X } from "lucide-react";
 import { nl } from "date-fns/locale";
 import { useEffect, useState } from "react";
+import { useEmployees } from "@/hooks/staff/employeeHooks";
+import EmployeeSelector from "@/components/selectors/employeeSelector";
 import LoadingState from "@/components/states/loadingState";
 import ErrorState from "@/components/states/ErrorState";
 
 export default function SelectProjectVehicleForm() {
-  const {
-    register,
-    control,
-    getValues,
-    formState: { errors },
-  } = useFormContext<ProjectFormInput>();
-  const { fields, append, remove, update, replace } = useFieldArray({ control, name: "vehicles" });
+  const { control, getValues, setValue } = useFormContext<ProjectFormInput>();
+  const { fields, append, remove, replace } = useFieldArray({ control, name: "vehicles" });
   const [days, setDays] = useState<string[]>([]);
   const values = useWatch({ control });
   const startDate = values.start_date;
@@ -32,15 +29,17 @@ export default function SelectProjectVehicleForm() {
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+  const [crewTarget, setCrewTarget] = useState<{ date: string; vehicleId: string } | null>(null);
+
   useEffect(() => {
     if (!startDate || !endDate || !days) return;
     setSelectedDate(days[0]);
   }, [startDate, endDate]);
 
   const { data: vehicles, isPending, error } = useActiveVehiclesWithEmployees();
-
-  if (isPending) return <LoadingState />;
-  if (error || !vehicles) return <ErrorState />;
+  const { data: employees, isPending: employeesPending, error: employeeError } = useEmployees();
+  if (isPending || employeesPending) return <LoadingState />;
+  if (error || !vehicles || employeeError || !employees) return <ErrorState />;
 
   const vehiclesOnDay = (date: string) => fields.filter((p) => p.date === date);
   const isOnDay = (date: string, vehicleId: string) =>
@@ -62,7 +61,13 @@ export default function SelectProjectVehicleForm() {
   }
 
   function removeVanDay(date: string) {
-    setDays((prev) => prev.filter((d) => d !== date));
+    setDays((prev) => {
+      const updatedDays = prev.filter((d) => d !== date);
+
+      setSelectedDate(updatedDays[0] ?? null);
+
+      return updatedDays;
+    });
   }
 
   function clearVansFromDay(date: string) {
@@ -81,6 +86,27 @@ export default function SelectProjectVehicleForm() {
 
     replace(next);
   }
+
+  function setCrew(date: string, vehicleId: string, employeeIds: string[]) {
+    const index = getValues("vehicles").findIndex(
+      (v) => v.date === date && v.vehicle_id === vehicleId,
+    );
+    if (index === -1) return;
+
+    setValue(`vehicles.${index}.employee_ids`, employeeIds, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  }
+
+  function crewFor(date: string, vehicleId: string) {
+    return getValues("vehicles")
+      .filter((f) => f.date === date && f.vehicle_id === vehicleId)
+      .flatMap((d) => d.employee_ids);
+  }
+
+  const crewIds = crewTarget ? crewFor(crewTarget.date, crewTarget.vehicleId) : [];
+
   return (
     <div className="space-y-6">
       <FormSection
@@ -194,15 +220,12 @@ export default function SelectProjectVehicleForm() {
                   <ul className="divide-y divide-line">
                     {vehicles?.map((vehicle) => {
                       const active = isOnDay(selectedDate, vehicle.id);
-                      const crew = active
-                        ? (vehiclesOnDay(selectedDate).find((p) => p.vehicle_id === vehicle.id)
-                            ?.employee_ids.length ?? 0)
-                        : (vehicle.employees?.length ?? 0);
+
+                      const crew = crewFor(selectedDate, vehicle.id);
 
                       return (
                         <li key={vehicle.id}>
-                          <button
-                            type="button"
+                          <div
                             onClick={() => toggleVehicleOnDay(selectedDate, vehicle.id)}
                             aria-pressed={active}
                             className={`group flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left transition-colors focus-visible:outline-none ${
@@ -241,11 +264,27 @@ export default function SelectProjectVehicleForm() {
                               )}
                             </span>
 
+                            {isOnDay(selectedDate, vehicle.id) && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setCrewTarget({ vehicleId: vehicle.id, date: selectedDate });
+                                }}
+                                className="inline-flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-line bg-white pr-1 pl-2 text-xs font-medium text-ink-soft transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary"
+                              >
+                                <Users className="h-3.5 w-3.5" aria-hidden="true" />
+                                Medewerkers
+                                <span className="rounded bg-surface px-1.5 py-0.5 text-[11px] text-muted tabular-nums group-hover:text-primary">
+                                  {crew.length}
+                                </span>
+                              </button>
+                            )}
+
                             <span className="flex shrink-0 items-center gap-1 text-xs text-muted tabular-nums">
                               <Users className="h-3.5 w-3.5" aria-hidden="true" />
-                              {crew}
+                              {crew.length}
                             </span>
-                          </button>
+                          </div>
                         </li>
                       );
                     })}
@@ -255,6 +294,19 @@ export default function SelectProjectVehicleForm() {
             )}
           </div>
         )}
+        <EmployeeSelector
+          open={!!crewTarget}
+          employees={employees}
+          selectedEmployees={employees.filter((e) => crewIds.includes(e.id))}
+          onChange={(employee) => {
+            if (!crewTarget) return;
+            const next = crewIds.includes(employee.id)
+              ? crewIds.filter((id) => id !== employee.id)
+              : [...crewIds, employee.id];
+            setCrew(crewTarget.date, crewTarget.vehicleId, next);
+          }}
+          onClose={() => setCrewTarget(null)}
+        />
       </FormSection>
     </div>
   );

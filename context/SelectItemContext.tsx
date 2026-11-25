@@ -26,7 +26,7 @@ const SelectionContext = createContext<Selection | null>(null);
 export function SelectionProvider({
   value,
   onChange,
-  defaultMethodId,
+  defaultMethodId = "846edf44-40b3-4d30-9e90-80c05e565bbd",
   children,
 }: {
   value: PlannedItem[];

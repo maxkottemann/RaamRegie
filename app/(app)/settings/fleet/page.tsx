@@ -2,8 +2,6 @@
 
 import SettingsHeader from "@/components/headers/settingsHeader";
 import BasicVehicleList from "@/components/lists/vehicles/basicVehicleList";
-import ErrorState from "@/components/states/ErrorState";
-import LoadingState from "@/components/states/loadingState";
 import Button from "@/components/ui/buttons/Button";
 import SearchInput from "@/components/ui/inputs/SearchInput";
 import { useVehicleBasics } from "@/hooks/staff/vehicleHooks";
@@ -12,6 +10,8 @@ import { Plus, Truck } from "lucide-react";
 import { useMemo, useState } from "react";
 import VehicleFormModal from "./_components/vehicleModal";
 import DeleteVehicleModal from "./_components/DeleteVehicleModal";
+import LoadingState from "@/components/states/loadingState";
+import ErrorState from "@/components/states/ErrorState";
 
 type VehicleDialog =
   | { type: "create" }

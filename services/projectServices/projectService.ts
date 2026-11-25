@@ -1,4 +1,6 @@
+import { ModuleKey } from "@/modules/types/types";
 import { Database } from "@/types/database.types";
+import { ProjectFormValues } from "@/zodSchemas/projectSchema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export type ProjectFilters = {
@@ -11,6 +13,8 @@ export type ProjectFilters = {
 };
 
 const PAGE_SIZE = 25;
+
+type CreateProjectArgs = Database["public"]["Functions"]["create_project"]["Args"];
 
 export async function getProjectsForList(
   supabase: SupabaseClient<Database>,
@@ -46,6 +50,38 @@ export async function getProjectsForList(
 
   if (error) throw error;
   return { projects: data ?? [], count: count ?? 0, pageSize: PAGE_SIZE };
+}
+function toCreateProjectArgs(module: ModuleKey, values: ProjectFormValues): CreateProjectArgs {
+  return {
+    p_module: module,
+    p_name: values.name,
+    p_location_id: values.location_id,
+    p_start_date: values.start_date,
+    p_end_date: values.end_date,
+    p_description: values.description ?? undefined,
+    p_project_code: values.projectCode ?? undefined,
+    p_items: values.items.map(({ item_id, planned_quantity, cleaning_method_id }) => ({
+      item_id,
+      planned_quantity,
+      cleaning_method_id,
+    })),
+    p_vehicles: values.vehicles.map(({ vehicle_id, date, employee_ids }) => ({
+      vehicle_id,
+      date,
+      employee_ids,
+    })),
+  };
+}
+export async function createProject(
+  supabase: SupabaseClient<Database>,
+  module: ModuleKey,
+  values: ProjectFormValues,
+) {
+  const { data, error } = await supabase.rpc("create_project", toCreateProjectArgs(module, values));
+
+  console.log(error);
+  if (error) throw error;
+  return data;
 }
 
 export type BasicProjectPage = Awaited<ReturnType<typeof getProjectsForList>>;

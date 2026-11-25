@@ -10,7 +10,11 @@ export default function NewCurtainProjectForm({
 }: ProjectPlannerProps) {
   return (
     <div className="flex flex-col gap-5">
-      <SelectionProvider value={value} onChange={onChange} defaultMethodId="">
+      <SelectionProvider
+        value={value}
+        onChange={onChange}
+        defaultMethodId="846edf44-40b3-4d30-9e90-80c05e565bbd"
+      >
         <CurtainStoryList locationId={locationId} />
       </SelectionProvider>
     </div>

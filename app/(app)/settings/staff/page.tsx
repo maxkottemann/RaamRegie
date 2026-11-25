@@ -2,8 +2,6 @@
 
 import SettingsHeader from "@/components/headers/settingsHeader";
 import EmployeeList from "@/components/lists/vehicles/employeeList";
-import ErrorState from "@/components/states/ErrorState";
-import LoadingState from "@/components/states/loadingState";
 import Button from "@/components/ui/buttons/Button";
 import SearchInput from "@/components/ui/inputs/SearchInput";
 import { useEmployees } from "@/hooks/staff/employeeHooks";
@@ -12,6 +10,8 @@ import { Plus, UserCheck } from "lucide-react";
 import { useMemo, useState } from "react";
 import EmployeeFormModal from "./_components/EmployeeModal";
 import DeleteEmployeeModal from "./_components/DeleteEmployeeModal";
+import LoadingState from "@/components/states/loadingState";
+import ErrorState from "@/components/states/ErrorState";
 
 type EmployeeDialogue =
   | { type: "create" }

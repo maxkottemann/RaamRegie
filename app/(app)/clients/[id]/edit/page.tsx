@@ -4,8 +4,8 @@ import NotFoundState from "@/components/states/notFound";
 import { useClient } from "@/hooks/clientHooks";
 import { useParams } from "next/navigation";
 import EditClientForm from "./_components/editClientForm";
-import LoadingState from "@/components/states/loadingState";
 import ErrorState from "@/components/states/ErrorState";
+import LoadingState from "@/components/states/loadingState";
 
 export default function EditClientPage() {
   const params = useParams();

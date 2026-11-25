@@ -20,6 +20,7 @@ import { Controller, FormProvider, useForm, useFormContext, useWatch } from "rea
 import FormSection from "@/components/ui/forms/formsection";
 import NewProjectSummarySideBar from "./_components/NewProjectSummarySidebar";
 import SelectProjectVehicleForm from "@/components/ui/forms/projectForms/selectProjectVehicleForm";
+import { useCreateProject } from "@/hooks/projectHooks/projectHooks";
 
 export default function NewProjectWizard({ module }: { module: ModuleKey }) {
   const router = useRouter();
@@ -27,6 +28,8 @@ export default function NewProjectWizard({ module }: { module: ModuleKey }) {
 
   const mod = getModule(module)!;
   const Planner = mod.ProjectPlanner;
+
+  const createProject = useCreateProject();
 
   const form = useForm<ProjectFormInput, unknown, ProjectFormValues>({
     resolver: zodResolver(ProjectSchema),
@@ -37,8 +40,18 @@ export default function NewProjectWizard({ module }: { module: ModuleKey }) {
   // hooks at the top, never inside JSX
   const locationId = useWatch({ control: form.control, name: "location_id" });
 
-  function onSubmit(values: ProjectFormValues) {}
-
+  function onSubmit(values: ProjectFormValues) {
+    createProject.mutate(
+      { module, values },
+      {
+        onSuccess: (projectId) => {
+          showToast("Project aangemaakt", "success");
+          router.push(`/projects/${projectId}`);
+        },
+        onError: (error) => showToast(getErrorMessage(error), "error"),
+      },
+    );
+  }
   return (
     <div className="flex flex-col gap-6">
       <SubPageHeader
@@ -50,7 +63,7 @@ export default function NewProjectWizard({ module }: { module: ModuleKey }) {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <form
             id="project-form"
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, (errors) => console.log("invalid", errors))}
             noValidate
             className="flex min-w-0 flex-col gap-6"
           >

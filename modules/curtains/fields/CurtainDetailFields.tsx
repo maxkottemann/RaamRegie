@@ -2,12 +2,12 @@ import { CurtainFormInput } from "@/zodSchemas/itemSchema";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListPlus, MoveHorizontal, MoveVertical, Palette, Ruler, Tag, Type } from "lucide-react";
 import { useCurtainMaterialOptions, useCurtainTypeOptions } from "@/hooks/itemHooks/curtainHooks";
-import ErrorState from "@/components/states/ErrorState";
 import FormSection from "@/components/ui/forms/formsection";
 import FormField from "@/components/ui/forms/formField";
 import Input from "@/components/ui/forms/inputs/input";
 import DateInput from "@/components/ui/forms/inputs/dateInput";
 import Select from "@/components/ui/forms/inputs/select";
+import ErrorState from "@/components/states/ErrorState";
 
 export default function CurtainDetailsFields() {
   const {

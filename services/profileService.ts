@@ -19,3 +19,13 @@ export async function getProfile(supabase: SupabaseClient<Database>): Promise<Pr
   if (error) throw error;
   return data;
 }
+
+export async function getCompanyProfileOptions(supabase: SupabaseClient<Database>) {
+  const { data, error } = await supabase.from("profiles").select("id,name");
+
+  if (error) throw error;
+  return data;
+}
+
+export type CompanyProfileOptions = Awaited<ReturnType<typeof getCompanyProfileOptions>>;
+export type CompanyProfileOption = CompanyProfileOptions[number];

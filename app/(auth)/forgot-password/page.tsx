@@ -42,10 +42,10 @@ export default function ForgotPasswordPage() {
         <div className="absolute inset-x-0 bottom-0 p-12">
           <div className="mb-5 h-1 w-12 rounded-full bg-brand" />
           <h2 className="max-w-md text-4xl leading-tight font-semibold tracking-tight text-white">
-            Controle over elk raam.
+            Controle over elke ruimte.
           </h2>
           <p className="mt-3 max-w-sm text-base text-white/70">
-            Beheer uw locaties, projecten en ramen vanuit één platform.
+            Beheer uw locaties, projecten en ruimtes vanuit één platform.
           </p>
         </div>
       </div>

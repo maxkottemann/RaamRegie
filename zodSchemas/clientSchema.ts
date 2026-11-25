@@ -1,16 +1,5 @@
 import { boolean, z } from "zod";
-
-const optionalText = z
-  .string()
-  .trim()
-  .transform((value) => (value === "" ? null : value));
-
-const optionalEmail = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .refine((value) => value === "" || z.email().safeParse(value).success, "Ongeldig e-mailadres")
-  .transform((value) => (value === "" ? null : value));
+import { optionalEmail, optionalText } from "./helpers/optionals";
 
 export const clientSchema = z.object({
   name: z.string().trim().min(1, "Naam is verplicht").max(120, "Maximaal 120 tekens"),

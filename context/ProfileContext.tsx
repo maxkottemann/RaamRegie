@@ -1,7 +1,7 @@
 "use client";
 
-import ErrorState from "@/components/states/errorState";
-import WindowLoader from "@/components/states/loadingState";
+import RoomError from "@/components/states/ErrorState";
+import RoomLoader from "@/components/states/loadingState";
 import { supabase } from "@/lib/browserClient";
 import { getProfile } from "@/services/profileService";
 import type { Tables } from "@/types/database.types";
@@ -40,11 +40,11 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (loading) {
-    return <WindowLoader fullScreen={true} />;
+    return <RoomLoader fullScreen={true} />;
   }
 
   if (error || !profile) {
-    return <ErrorState />;
+    return <RoomError />;
   }
 
   return <ProfileContext.Provider value={{ profile }}>{children}</ProfileContext.Provider>;

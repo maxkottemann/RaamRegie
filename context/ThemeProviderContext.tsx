@@ -1,105 +1,99 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { useCompany } from "@/hooks/companyHooks";
 import { useProfile } from "@/context/ProfileContext";
 import { supabase } from "@/lib/browserClient";
-import WindowLoader from "@/components/states/loadingState";
+import LoadingState from "@/components/states/loadingState";
+
+/*
+ * White-label theme: the two brand colors from globals.css.
+ *   primary → --brand-primary (buttons, links, active nav item)
+ *   nav     → --brand-nav     (sidebar / top bar)
+ * Hover and soft variants are derived in CSS, so only these two are set here.
+ * A missing color is simply not set, so the default from :root in globals.css applies.
+ */
 
 interface Theme {
-  primary: string;
-  secondary: string;
-  accent: string;
+  primary: string | null;
+  nav: string | null;
 }
 
-const defaultTheme: Theme = {
-  primary: "#154273",
-  secondary: "#3ab8bf",
-  accent: "#f5a623",
-};
+const NO_THEME: Theme = { primary: null, nav: null };
 
-const ThemeContext = createContext<Theme>(defaultTheme);
+const ThemeContext = createContext<Theme>(NO_THEME);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { company } = useCompany();
+const HEX = /^#[0-9a-f]{6}$/i;
+const valid = (color: string | null | undefined) => (color && HEX.test(color) ? color : null);
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const { company, loading: companyLoading } = useCompany();
   const { profile } = useProfile();
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
-  const [themeLoaded, setThemeLoaded] = useState(false);
+  const [theme, setTheme] = useState<Theme | null>(null); // null = still resolving
 
   useEffect(() => {
+    let cancelled = false;
+
     async function resolveTheme() {
-      if (!profile) return;
+      const isCompanyUser = profile.role === "company_admin" || profile.role === "company_employee";
+      const isClientUser = profile.role === "client_admin" || profile.role === "client_viewer";
 
-      try {
-        if (profile.role === "company_admin" || profile.role === "company_employee") {
-          if (!company) return;
-          applyTheme({
-            primary: company.primary_color ?? defaultTheme.primary,
-            secondary: company.secondary_color ?? defaultTheme.secondary,
-            accent: company.accent_color ?? defaultTheme.accent,
-          });
-          setThemeLoaded(true);
-          return;
-        }
-
-        if (
-          (profile.role === "client_admin" || profile.role === "client_viewer") &&
-          profile.client_id
-        ) {
-          const { data: companies } = await supabase
-            .from("company_clients")
-            .select("companies(primary_color,secondary_color,accent_color)")
-            .eq("client_id", profile.client_id);
-
-          if (!companies?.length) {
-            applyTheme(defaultTheme);
-            setThemeLoaded(true);
-          }
-
-          if (companies?.length === 1) {
-            applyTheme({
-              primary: companies[0]?.companies.primary_color ?? defaultTheme.primary,
-              secondary: companies[0]?.companies.secondary_color ?? defaultTheme.secondary,
-              accent: companies[0]?.companies.accent_color ?? defaultTheme.accent,
-            });
-            setThemeLoaded(true);
-            return;
-          }
-
-          applyTheme(defaultTheme);
-          setThemeLoaded(true);
-          return;
-        }
-
-        applyTheme(defaultTheme);
-        setThemeLoaded(true);
-      } catch {
-        applyTheme(defaultTheme);
-        setThemeLoaded(true);
+      // company users: their own company's colors
+      if (isCompanyUser) {
+        if (companyLoading) return; // wait for the company, then this effect runs again
+        return finish({
+          primary: valid(company?.primary_color),
+          nav: valid(company?.secondary_color),
+        });
       }
+
+      // client users: the colors of the company that serves them (only if there is exactly one)
+      if (isClientUser && profile.client_id) {
+        const { data, error } = await supabase
+          .from("company_clients")
+          .select("companies(primary_color, secondary_color)")
+          .eq("client_id", profile.client_id);
+
+        if (!error && data?.length === 1) {
+          const c = data[0].companies;
+          return finish({ primary: valid(c?.primary_color), nav: valid(c?.secondary_color) });
+        }
+      }
+
+      // super admin, several companies, or something went wrong: the Room360 defaults
+      finish(NO_THEME);
     }
 
-    resolveTheme();
-  }, [company, profile]);
+    function finish(next: Theme) {
+      if (!cancelled) setTheme(next);
+    }
 
-  function applyTheme(t: Theme) {
-    setTheme(t);
-  }
+    resolveTheme().catch(() => finish(NO_THEME));
 
-  if (!themeLoaded) {
-    return <WindowLoader fullScreen={true} />;
-  }
+    return () => {
+      cancelled = true;
+    };
+  }, [company, companyLoading, profile]);
+
+  if (!theme) return <LoadingState fullScreen />;
+
+  // only override what the tenant actually set
+  const style = {
+    ...(theme.primary && { "--brand-primary": theme.primary }),
+    ...(theme.nav && { "--brand-nav": theme.nav }),
+  } as CSSProperties;
+
   return (
     <ThemeContext.Provider value={theme}>
-      <div
-        style={
-          {
-            "--color-primary": theme.primary,
-            "--color-secondary": theme.secondary,
-            "--color-accent": theme.accent,
-          } as React.CSSProperties
-        }
-      >
+      {/* "contents": the wrapper adds no box, so it never breaks your layout; CSS variables still inherit */}
+      <div className="contents" style={style}>
         {children}
       </div>
     </ThemeContext.Provider>

@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, House, Settings, Users2, type LucideIcon } from "lucide-react";
+import {
+  Building2,
+  ClipboardListIcon,
+  House,
+  Settings,
+  Users2,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCompany } from "@/hooks/companyHooks";
 import { useProfile } from "@/context/ProfileContext";
@@ -29,6 +36,10 @@ const SECTIONS: NavSection[] = [
     links: [{ href: "/dashboard", label: "Dashboard", icon: House }],
   },
   {
+    label: "Projecten",
+    links: [{ href: "/projects", label: "Projecten", icon: ClipboardListIcon }],
+  },
+  {
     label: "Klanten & Locaties",
     links: [
       { href: "/clients", label: "Klanten", icon: Users2 },
@@ -42,7 +53,7 @@ const SECTIONS: NavSection[] = [
   },
 ];
 
-const FALLBACK_LOGO = "/smalllogo.png";
+const FALLBACK_LOGO = "/fulllogo.png";
 const COMPANY_ROLES: Role[] = ["company_admin", "company_employee", "super_admin"];
 
 interface SidebarProps {
@@ -153,7 +164,7 @@ export default function Sidebar({ className, open, onClose }: SidebarProps) {
                       >
                         <span
                           aria-hidden="true"
-                          className={`absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-full bg-brand from-primary to-secondary transition-opacity duration-200 ${active ? "opacity-100" : "opacity-0"}`}
+                          className={`bg-brand to-secondary absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-full from-primary transition-opacity duration-200 ${active ? "opacity-100" : "opacity-0"}`}
                         />
                         <Icon
                           strokeWidth={1.75}

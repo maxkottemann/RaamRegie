@@ -15,6 +15,27 @@ export async function getVehiclesBasics(supabase: SupabaseClient<Database>) {
   return data;
 }
 
+export async function getActiveVehiclesWithEmployees(supabase: SupabaseClient<Database>) {
+  const { data, error } = await supabase
+    .from("vehicles")
+    .select(
+      "id,name,license_plate,city,postal_code,street,number,co2,co2_old,vehicle_default_employees(employees!inner(id,name))",
+    )
+    .is("archived_at", null)
+    .eq("is_active", true)
+    .is("vehicle_default_employees.employees.archived_at", null)
+    .eq("vehicle_default_employees.employees.is_active", true);
+
+  if (error) throw error;
+
+  return data.map(({ vehicle_default_employees, ...vehicle }) => ({
+    ...vehicle,
+    employees: vehicle_default_employees
+      .map((link) => link.employees)
+      .filter((e): e is NonNullable<typeof e> => e != null),
+  }));
+}
+
 export async function getVehicleOptions(supabase: SupabaseClient<Database>) {
   const { data, error } = await supabase
     .from("vehicles")

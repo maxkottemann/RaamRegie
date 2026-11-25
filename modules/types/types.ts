@@ -2,7 +2,7 @@ import { Database } from "@/types/database.types";
 import { PlannedItem } from "@/zodSchemas/projectSchema";
 import { LucideIcon } from "lucide-react";
 import { Project } from "next/dist/build/swc/types";
-import { ComponentType } from "react";
+import { Component, ComponentType } from "react";
 
 // → "curtains" | "floors" | "chairs"
 export type ModuleKey = Database["public"]["Enums"]["module_key"];
@@ -29,6 +29,7 @@ export interface ProjectPlannerProps {
   value: PlannedItem[];
   onChange: (items: PlannedItem[]) => void;
 }
+export interface ProjectDetailProps {}
 export interface ModuleDefinition {
   key: ModuleKey;
   label: string; // "Gordijnen"
@@ -39,4 +40,5 @@ export interface ModuleDefinition {
 
   ItemForm: ComponentType<ItemFormProps>;
   ProjectPlanner: ComponentType<ProjectPlannerProps>;
+  ProjectDetailPage: ComponentType<ProjectDetailProps>;
 }

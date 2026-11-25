@@ -1,4 +1,5 @@
 import { ModuleKey } from "@/modules/types/types";
+import { CleaningMethod } from "@/services/cleaningMethodsService";
 
 export type TypeDialog =
   | { type: "create" }

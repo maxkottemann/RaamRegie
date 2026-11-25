@@ -3,6 +3,7 @@ import { Blinds, BookOpen, Box, Grid3X3 } from "lucide-react";
 import { ModuleDefinition, ModuleKey } from "./types/types";
 import CurtainInsertForm from "./curtains/itemForm";
 import NewCurtainProjectForm from "./curtains/newProjectForm";
+import CurtainProjectDetailPage from "./curtains/ProjectDetailPage";
 
 export const MODULES = {
   curtains: {
@@ -17,16 +18,7 @@ export const MODULES = {
     ],
     ItemForm: CurtainInsertForm,
     ProjectPlanner: NewCurtainProjectForm,
-  },
-  floors: {
-    key: "floors",
-    label: "Vloeren",
-    icon: Grid3X3,
-    description: "Vloeren",
-    categories: ["floor"],
-    nav: [{ label: "Objecten", href: "/items", icon: Grid3X3 }],
-    ItemForm: CurtainInsertForm,
-    ProjectPlanner: NewCurtainProjectForm,
+    ProjectDetailPage: CurtainProjectDetailPage,
   },
 } satisfies Partial<Record<ModuleKey, ModuleDefinition>>;
 

@@ -15,7 +15,7 @@ export async function getVehiclesBasics(supabase: SupabaseClient<Database>) {
   return data;
 }
 
-export async function getActiveVehicleWithEmployees(supabase: SupabaseClient<Database>) {
+export async function getActiveVehiclesWithEmployees(supabase: SupabaseClient<Database>) {
   const { data, error } = await supabase
     .from("vehicles")
     .select(
@@ -23,13 +23,16 @@ export async function getActiveVehicleWithEmployees(supabase: SupabaseClient<Dat
     )
     .is("archived_at", null)
     .eq("is_active", true)
-    .eq("vehicle_default_employees.employees.is_active", true)
-    .is("vehicle_default_employees.employees.archived_at", null);
+    .is("vehicle_default_employees.employees.archived_at", null)
+    .eq("vehicle_default_employees.employees.is_active", true);
 
   if (error) throw error;
-  return data.map(({ vehicle_default_employees, ...d }) => ({
-    ...d,
-    employees: vehicle_default_employees.map((e) => e.employees),
+
+  return data.map(({ vehicle_default_employees, ...vehicle }) => ({
+    ...vehicle,
+    employees: vehicle_default_employees
+      .map((link) => link.employees)
+      .filter((e): e is NonNullable<typeof e> => e != null),
   }));
 }
 

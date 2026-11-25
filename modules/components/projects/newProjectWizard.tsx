@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { Controller, FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
 import FormSection from "@/components/ui/forms/formsection";
 import NewProjectSummarySideBar from "./_components/NewProjectSummarySidebar";
+import SelectProjectVehicleForm from "@/components/ui/forms/projectForms/selectProjectVehicleForm";
 import NewProjectVehicleSelector from "@/components/ui/forms/projectForms/newProjectVehicleSelector";
 
 export default function NewProjectWizard({ module }: { module: ModuleKey }) {
@@ -91,6 +92,7 @@ export default function NewProjectWizard({ module }: { module: ModuleKey }) {
             </FormSection>
 
             {/* 3. later: <ProjectVehicleFields /> */}
+            <SelectProjectVehicleForm />
 
             <NewProjectVehicleSelector />
 

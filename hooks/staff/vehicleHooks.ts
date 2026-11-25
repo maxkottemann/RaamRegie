@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/browserClient";
 import {
   createVehicle,
-  getActiveVehicleWithEmployees,
+  getActiveVehiclesWithEmployees,
   getVehicleOptions,
   getVehiclesBasics,
   removeVehicle,
@@ -22,7 +22,7 @@ export function useVehicleBasics() {
 export function useActiveVehiclesWithEmployees() {
   return useQuery({
     queryKey: ["vehicles", "employees"],
-    queryFn: () => getActiveVehicleWithEmployees(supabase),
+    queryFn: () => getActiveVehiclesWithEmployees(supabase),
   });
 }
 
